@@ -8,7 +8,8 @@ Authors@R: person("Fan", "Wu", email = "fannwu@umich.edu",
 Description: A semi-parametric estimation method for the Cox model
     with left-truncated data using augmented information
     from the marginal of truncation times.
-Depends: R (>= 3.2.0)
+Depends:
+    R (>= 3.2.0)
 License: GPL-3
 LazyData: TRUE
 Imports:
@@ -18,3 +19,4 @@ Imports:
 URL: https://github.com/942kid/plac
 BugReports: https://github.com/942kid/plac/issues
 LinkingTo: Rcpp, RcppEigen
+RoxygenNote: 5.0.1
