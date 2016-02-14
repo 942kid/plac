@@ -1,0 +1,16 @@
+Package: plac
+Type: Package
+Title: A Pairwise Likelihood Augmented Estimator for the Cox Model under Left-Truncation
+Version: 0.1
+Date: 2016-02-12
+Author: Fan Wu
+Maintainer: Fan Wu <fannwu@umich.edu>
+Description: A semi-parametric estimation method for the Cox model 
+    with left-truncated data using augmented information 
+    from the marginal of truncation times.
+License: Not sure for now
+LazyData: TRUE
+Imports:
+    survival,
+    Rcpp,
+    RcppEigen
