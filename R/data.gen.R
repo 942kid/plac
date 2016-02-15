@@ -1,5 +1,32 @@
 # sim.data() : Function to generate left truncated and right censored data using the Cox's model
 
+#' Generate left-truncated (and right-cencored) data from the Cox model.
+#'
+#' Various baseline survival functions and truncation distribution are
+#' available. Censoring rate can be designated through tuning the parameter
+#' \code{Cmax}; \code{Cmas = Inf} means no censoring.
+#'
+#' @param n An integer for sample size.
+#' @param b A numeric vector for true regression coefficients.
+#' @param distr.T A character for the baseline survival time (T*) distribution
+#'   ("exp" or "weibull").
+#' @param shape.T The shape parameter for the Weibull distribution of T*.
+#' @param scale.T The scale parameter for the Exponential/Weibull distribution
+#'   of T*.
+#' @param distr.A A character for the baseline truncation time (A*) distribution
+#'   ("weibull", "unif" (Length-Biased Sampling) or "binomial").
+#' @param shape.A The shape parameter for the Weibull distribution of A*.
+#' @param scale.A The scale parameter for the Weibull distribution of A*.
+#' @param p.A The success probability for the binomial distribution of A*.
+#' @param Cmax The upper bound of the uniform distribution of the censoring time
+#'   (C).
+#' @param fix.seed An optional random seed for simulation.
+#' @return A data.frame containing the observed survival times (Ys), the
+#'   observed truncation times (As), the event indicator (Ds) and the covariates
+#'   (Zs).
+#' @examples
+#' sim.data()
+#' sim.data(50, distr.A = "binomial", p.A = 0.8, Cmax = 5)
 #' @export
 sim.data = function(n=200, b = c(1,1),
                     distr.T = "weibull",
