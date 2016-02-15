@@ -129,6 +129,18 @@ sim.data = function(n=200, b = c(1,1),
 	return(list(dat=dat,p.censr=p.censr,p.trunc=p.trunc,tau=tau))
 }
 
+#' Calculate the censoring rate for a survival dataset correspondes to a
+#' specific \code{Cmax}.
+#' Increasing the sample size and/or the iteration numbers may help make the
+#' calculation more precise.
+#'
+#' @param I An integer iteration number.
+#' @inheritParams sim.data
+#' @return A decimal number of the censoring rate.
+#' @examples
+#' sim.pc()
+#' sim.pc(1, n = 800, distr.A = "binomial", p.A = 0.8)
+#' @export
 sim.pc = function(Cmax=10,n=500,I=500,
                   distr.T="weibull",distr.A = "weibull",
                   shape.T=2, scale.T = 1,
@@ -143,7 +155,14 @@ sim.pc = function(Cmax=10,n=500,I=500,
     return(pc)
 }
 
-# function to get the needed Cmax for specific censoring proportion
+#' Obtain the required Cmax for a specific censoring proportion (the inverse of
+#' \code{sim.pc()}).
+#'
+#' @param pc numeric. Proportion of censoring.
+#' @inheritParams sim.pc
+#' @param l numeric. The lower bound of the searching interval.
+#' @param u numeric. The upper bound of the searching interval.
+#' @param M integer. The maximal iteration for \code{uniroot}.
 #' @export
 get.Cmax = function(pc=0.5,l=0.1,u=10,n=500,I=500,
                     distr.T="weibull",distr.A = "weibull",
