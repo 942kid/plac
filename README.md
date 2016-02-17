@@ -6,7 +6,7 @@
 
 ## Installation
 
-This package can be installed it from github with devtools:
+This package can be installed from github with devtools:
 
 ```R
 # install.packages("devtools")
