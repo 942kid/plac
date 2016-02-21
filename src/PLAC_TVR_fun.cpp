@@ -329,7 +329,6 @@ Eigen::MatrixXd SWE_TvR1(Eigen::Map<Eigen::MatrixXd> ZF,
 
 }
 
-// [[Rcpp::depends(RcppEigen)]]
 // [[Rcpp::export]]
 List PLAC_TvR1(Eigen::Map<Eigen::MatrixXd> ZF,
                Eigen::Map<Eigen::MatrixXd> ZFV_,

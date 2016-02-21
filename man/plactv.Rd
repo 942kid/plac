@@ -4,15 +4,17 @@
 \alias{plactv}
 \title{Calculate the PLAC estimator when a time-dependent indicator presents}
 \usage{
-plactv(formula, data, id.var, td.var, tjump, init.val = NULL,
-  max.iter = 100, ...)
+plactv(formula, data, id.var, td.var, type = "independent", tjump,
+  init.val = NULL, max.iter = 100, ...)
 }
 \arguments{
 \item{formula}{a formula of of the form \code{Surv(A, X, D) ~ Z} including the time-invariate covariates only.}
 
 \item{id.var}{a name of the subject id in \code{data}.}
 
-\item{td.var}{aname of the time-dependent covariate in the output.}
+\item{td.var}{a name of the time-dependent covariate in the output.}
+
+\item{type}{the type of the time-dependent covariate. Either one of \code{c("independent", "post-trunc", "pre-post-trunc")}.}
 
 \item{tjump}{a name of the jump time variable in \code{data}.}
 

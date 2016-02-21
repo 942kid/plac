@@ -433,8 +433,7 @@ List PLAC_Tv3(Eigen::Map<Eigen::MatrixXd> Z,
 
     }
 
-    cout << k << " Iterations\n" << endl;
-
+    Rcout << k << " Iterations\n" << endl;
     swe = SWE_Tv2(ZFV_, Z, X, W, Ind1, Ind2, b_hat, h_hat);
 
     VectorXd se_b_hat(p),

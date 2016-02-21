@@ -9,10 +9,10 @@ step.L(est, t.eval = c(0.25, 0.75))
 \arguments{
 \item{est}{an object of the class \code{plac.fit}.}
 
-\item{t.eval}{time points at which the \Lambda(t) is evaluated (for both conditional apporach and the PLAC estimator).}
+\item{t.eval}{time points at which the Lambda(t) is evaluated (for both conditional apporach and the PLAC estimator).}
 }
 \value{
-a list containing the estiamtes and SEs of \Lambda(t) for both conditional apporach and the PLAC estimator.
+a list containing the estiamtes and SEs of Lambda(t) for both conditional apporach and the PLAC estimator.
 }
 \description{
 Calulate the Values of the cumulative Hazard at Fixed Times

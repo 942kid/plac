@@ -9,11 +9,11 @@ Description: A semi-parametric estimation method for the Cox model
     with left-truncated data using augmented information
     from the marginal of truncation times.
 Depends:
-    R (>= 3.2.0),
-    survival (>= 2.38-3)
+    R (>= 3.2.0)
 License: GPL-3
 LazyData: TRUE
 Imports:
+    survival (>= 2.38-3),
     Rcpp (>= 0.12.1),
     RcppEigen (>= 0.3.2.5.0)
 URL: https://github.com/942kid/plac
