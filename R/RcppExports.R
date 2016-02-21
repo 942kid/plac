@@ -32,6 +32,22 @@ TvInd1 <- function(Zv, W) {
     .Call('plac_TvInd1', PACKAGE = 'plac', Zv, W)
 }
 
+#' C++ Function for Solving the PLAC Estimator (independent time-dependent)
+#'
+#' @param Z matrix for all the covariates history.
+#' @param ZFV_ matrix for all covariates at the each individual's
+#' observed survival time.
+#' @param X the response matrix (As, Xs, Ds).
+#' @param W the ordered observed event times.
+#' @param Ind1 risk-set indicators.
+#' @param Ind2 truncation pair indicators.
+#' @param Dn number of ties at each observed event time.
+#' @param b initial values of the regression coefficients.
+#' @param h initial values of the baseline hazard function.
+#' @param K maximal iteration number, the default is \code{K = 100}.
+#' @return list of model fitting results for both conditional approach and
+#' the PLAC estimator.
+#' @export
 PLAC_Tv3 <- function(Z, ZFV_, X, W, Ind1, Ind2, Dn, b, h, K = 100L) {
     .Call('plac_PLAC_Tv3', PACKAGE = 'plac', Z, ZFV_, X, W, Ind1, Ind2, Dn, b, h, K)
 }
