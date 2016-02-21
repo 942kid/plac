@@ -3,7 +3,6 @@
 export(PwInd1)
 export(SgInd1)
 export(TvInd1)
-export(comp.est)
 export(comp.estR)
 export(get.Cmax)
 export(plactv)

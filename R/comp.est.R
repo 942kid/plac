@@ -95,6 +95,11 @@ comp.estR = function(dat){
                 k=plac.fit$iter))
 }
 
+#' Calulate the Values of the cumulative Hazard at Fixed Times
+#'
+#' @param est an object of the class \code{plac.fit}.
+#' @param t.eval time points at which the \Lambda(t) is evaluated (for both conditional apporach and the PLAC estimator).
+#' @return a list containing the estiamtes and SEs of \Lambda(t) for both conditional apporach and the PLAC estimator.
 #' @export
 step.L = function(est, t.eval=c(0.25, 0.75)){
 

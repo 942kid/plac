@@ -4,7 +4,8 @@
 \alias{plactv}
 \title{Calculate the PLAC estimator when a time-dependent indicator presents}
 \usage{
-plactv(formula, data, id.var, td.var, tjump, init.val = NULL, ...)
+plactv(formula, data, id.var, td.var, tjump, init.val = NULL,
+  max.iter = 100, ...)
 }
 \arguments{
 \item{formula}{a formula of of the form \code{Surv(A, X, D) ~ Z} including the time-invariate covariates only.}
