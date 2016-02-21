@@ -65,6 +65,13 @@ using Eigen::ArrayXd;
 // JP = pairwise likelihood observed Fisher information;
 
 // [[Rcpp::depends(RcppEigen)]]
+
+//' Generate risk-set indicators
+//'
+//' @param X the response matrix (As, Xs, Ds).
+//' @param W the ordered observed event times.
+//' @return risk-set indicators Y_i(w_k) of the form I(A_i <= w_k <= X_i).
+//' @export
 // [[Rcpp::export]]
 Eigen::MatrixXd SgInd1(Eigen::Map<Eigen::MatrixXd> X,
                        Eigen::Map<Eigen::ArrayXd> W){
@@ -81,7 +88,13 @@ Eigen::MatrixXd SgInd1(Eigen::Map<Eigen::MatrixXd> X,
 	return out;
 
 }
-// [[Rcpp::depends(RcppEigen)]]
+//' Generate truncation-pair indicators
+//'
+//' @param X the response matrix (As, Xs, Ds).
+//' @param W the ordered observed event times.
+//' @return the truncation-pair indicators of the form I(w_k <= A_i)
+//' - I(w_k <= XA_j).
+//' @export
 // [[Rcpp::export]]
 Eigen::MatrixXd PwInd1(Eigen::Map<Eigen::MatrixXd> X,
                        Eigen::Map<Eigen::ArrayXd> W){
@@ -98,7 +111,13 @@ Eigen::MatrixXd PwInd1(Eigen::Map<Eigen::MatrixXd> X,
 	return out;
 
 }
-// [[Rcpp::depends(RcppEigen)]]
+
+//' Generate time-depependent covariate indicators
+//'
+//' @param Zv the jump time.
+//' @param W the ordered observed event times.
+//' @return the time-depependent covariate indicators of the form I(w_k > zeta).
+//' @export
 // [[Rcpp::export]]
 Eigen::MatrixXd TvInd1(Eigen::Map<Eigen::VectorXd> Zv,
                        Eigen::Map<Eigen::ArrayXd> W){
@@ -114,8 +133,7 @@ Eigen::MatrixXd TvInd1(Eigen::Map<Eigen::VectorXd> Zv,
 
 	return out;
 }
-// [[Rcpp::depends(RcppEigen)]]
-// [[Rcpp::export]]
+
 Eigen::MatrixXd BetaTv2(Eigen::Map<Eigen::MatrixXd> ZFV_,
                         Eigen::Map<Eigen::MatrixXd> Z,
                         Eigen::Map<Eigen::MatrixXd> X,
