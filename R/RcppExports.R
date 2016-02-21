@@ -32,14 +32,6 @@ TvInd1 <- function(Zv, W) {
     .Call('plac_TvInd1', PACKAGE = 'plac', Zv, W)
 }
 
-LambdaTv2 <- function(Z, X, Ind1, Ind2, Dn, b, h) {
-    .Call('plac_LambdaTv2', PACKAGE = 'plac', Z, X, Ind1, Ind2, Dn, b, h)
-}
-
-SWE_Tv2 <- function(ZFV_, Z, X, W, Ind1, Ind2, b, h) {
-    .Call('plac_SWE_Tv2', PACKAGE = 'plac', ZFV_, Z, X, W, Ind1, Ind2, b, h)
-}
-
 PLAC_Tv3 <- function(Z, ZFV_, X, W, Ind1, Ind2, Dn, b, h, K = 100L) {
     .Call('plac_PLAC_Tv3', PACKAGE = 'plac', Z, ZFV_, X, W, Ind1, Ind2, Dn, b, h, K)
 }

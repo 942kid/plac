@@ -221,8 +221,7 @@ Eigen::MatrixXd BetaTv2(Eigen::Map<Eigen::MatrixXd> ZFV_,
     return (JC_b/n + JP_b/n/(n-1)).inverse() * (UC_b/n + UP_b/(n*(n-1)));
 
 }
-// [[Rcpp::depends(RcppEigen)]]
-// [[Rcpp::export]]
+
 Eigen::VectorXd LambdaTv2(Eigen::Map<Eigen::MatrixXd> Z,
                           Eigen::Map<Eigen::MatrixXd> X,
                           Eigen::Map<Eigen::MatrixXd> Ind1,
@@ -275,8 +274,7 @@ Eigen::VectorXd LambdaTv2(Eigen::Map<Eigen::MatrixXd> Z,
     return (Dn/(UC_Lambda/n+UP_Lambda/n/(n-1)).array()).matrix()/n;
 
 }
-// [[Rcpp::depends(RcppEigen)]]
-// [[Rcpp::export]]
+
 Eigen::MatrixXd SWE_Tv2(Eigen::Map<Eigen::MatrixXd> ZFV_,
                         Eigen::Map<Eigen::MatrixXd> Z,
                         Eigen::Map<Eigen::MatrixXd> X,
@@ -397,7 +395,6 @@ Eigen::MatrixXd SWE_Tv2(Eigen::Map<Eigen::MatrixXd> ZFV_,
 
 }
 
-// [[Rcpp::depends(RcppEigen)]]
 // [[Rcpp::export]]
 List PLAC_Tv3(Eigen::Map<Eigen::MatrixXd> Z,
               Eigen::Map<Eigen::MatrixXd> ZFV_,
