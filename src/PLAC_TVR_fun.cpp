@@ -329,8 +329,26 @@ Eigen::MatrixXd SWE_TvR1(Eigen::Map<Eigen::MatrixXd> ZF,
 
 }
 
+//' C++ Function for Solving the PLAC Estimator.
+//' (with time-dependent convariates depending on A^*)
+//'
+//' @param ZF matrix for all the time-invariant covariates.
+//' @param ZFV_ matrix for all covariates at the each individual's
+//' observed survival time.
+//' @param Z matrix for all the covariates history.
+//' @param X the response matrix (As, Xs, Ds).
+//' @param W the ordered observed event times.
+//' @param Ind1 risk-set indicators.
+//' @param Ind2 truncation pair indicators.
+//' @param Dn number of ties at each observed event time.
+//' @param b initial values of the regression coefficients.
+//' @param h initial values of the baseline hazard function.
+//' @param K maximal iteration number, the default is \code{K = 100}.
+//' @return list of model fitting results for both conditional approach and
+//' the PLAC estimator.
+//' @export
 // [[Rcpp::export]]
-List PLAC_TvR1(Eigen::Map<Eigen::MatrixXd> ZF,
+List PLAC_TvR(Eigen::Map<Eigen::MatrixXd> ZF,
                Eigen::Map<Eigen::MatrixXd> ZFV_,
                Eigen::Map<Eigen::MatrixXd> Z,
                Eigen::Map<Eigen::MatrixXd> X,

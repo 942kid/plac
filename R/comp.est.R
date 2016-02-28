@@ -1,22 +1,26 @@
-
-
 #' Calculate the PLAC estimator when a time-dependent indicator presents
 #'
 #' Both a conditional approach Cox model and a pairwise likelihood augmented estimator are fitted and the corresponding results are returned in a list.
-#' @param formula a formula of of the form \code{Surv(A, X, D) ~ Z} including the time-invariate covariates only.
-#' @param a data.frame of the LTRC dataset including the responses, time-invariate covariates and the jump times for the time-depnencent covariate.
+#' @param formula a formula of of the form \code{Surv(A, X, D) ~ Z}, where \code{Z} only include the time-invariate covariates.
+#' @param data a data.frame of the LTRC dataset including the responses, time-invariate covariates and the jump times for the time-depnencent covariate.
 #' @param id.var a name of the subject id in \code{data}.
 #' @param td.var  a name of the time-dependent covariate in the output.
-#' @param type the type of the time-dependent covariate. Either one of \code{c("independent", "post-trunc", "pre-post-trunc")}.
+#' @param type the type of the time-dependent covariate. Either one of \code{c("none", "independent", "post-trunc", "pre-post-trunc")}. See Details.
 #' @param tjump a name of the jump time variable in \code{data}.
 #' @param init.val a list of the initial values of the coefficients and the baseline hazard function for the PLAC estimator.
 #' @useDynLib plac
 #' @importFrom Rcpp sourceCpp
 #' @importFrom survival Surv tmerge coxph
+#' @details The formula should have the same format as used in \code{coxph()}, where \code{A} is the truncation time (\code{tstart}), \code{X} is the survival time (\code{tstop}) and \code{D} is the status indicator (\code{event}).
+#' \code{type} is used to determine which \code{C++} function (either \code{PLAC_TV} or \code{PLAC_TVR}) to call. \code{"independent"} will invoke the former, whereas \code{"post-trunc"} and \code{"pre-post-trunc"} will invoke the latter.
+#' For \code{type = "post-trunc"}, the pre-truncation values for the time-dependent covariate will be set to be zero for all subjects.
+#'
 #' @return a list of model fitting results for both conditional approach and the PLAC estimators.
+#' @references Wu, F. Kim, S. and Li, Y. "A Pairwise Likelihood Augmented Estimator for Left-Truncated Data with Time-Dependent Covariates." (\emph{in preparation})
+#' @references Wu, F., Kim, S., Qin, J., Saran, R. and Li, Y. (2015) "A Pairwise-Likelihood Augmented Estimator for the Cox Model Under Left-Truncation." (Submitted to \emph{Journal of American Statistical Association}.)
 #' @export
-plactv = function(formula, data, id.var,
-                  td.var, type = "independent", tjump,
+PLAC = function(formula, data, id.var,
+                  td.var, type = "none", tjump,
                   init.val = NULL, max.iter = 100, ...){
   if( !inherits(formula, "formula") ) stop("A formula is required!")
   # grep the model.frame for later use
@@ -29,19 +33,19 @@ plactv = function(formula, data, id.var,
   W = unique(X[X[,3] == 1, 2])
   m = length(W)
   # at-risk processes
-  Ind1 = SgInd1(X, W)
+  Ind1 = SgInd(X, W)
   # truncation process
-  Ind2 = PwInd1(X, W)
+  Ind2 = PwInd(X, W)
   # number of events at each w_k
   Dn = as.numeric(rle(X[X[,3] == 1, 2])$lengths)
-  ZF = as.matrix(model.matrix(attr(mf, "terms"), data=mf)[,-1], nrow = n)
+  ZF = as.matrix(model.matrix(attr(mf, "terms"), data=mf)[ , -1], nrow = n)
   colnames(ZF) = names(mf)[-1]
   if( type == "post-trunc" ){
     assign(td.var, rep(0, n))
-    eval(parse(text = paste0("ZF = cbind(ZF,", td.var, ")")))
+    eval(parse(text = paste0("ZF = cbind(ZF, ", td.var, ")")))
   }
   # need counting process expansion of the data
-  eval(parse(text = paste0("data.count = tmerge(data,data,id =", id.var,
+  eval(parse(text = paste0("data.count = tmerge(data, data, id = ", id.var,
                            ", death = event(", resp[2], ", ", resp[3], "), ",
                            td.var, " = tdc(", tjump, "))")))
   data.count$id = NULL
@@ -84,14 +88,16 @@ plactv = function(formula, data, id.var,
   # covariate values at the observed survival times
   eval(parse(text = paste0("ZV_ = subset(data.count, select = ", td.var, ", tstop == ", resp[2],")[[1]]")))
   ZFV_ = rbind(ZFt, ZV_)
-  IndZ = TvInd1(ZV, W)
+  IndZ = TvInd(ZV, W)
   Za = array(c(rep(ZF, each = m), IndZ), c(m, n, p))
   Z = matrix(aperm(Za, c(3, 1, 2)), m * p, n)
 
-  if( type == "independent" ){
-    plac.fit = PLAC_Tv3(Z, ZFV_, X, W, Ind1, Ind2, Dn, b_0, h_0, max.iter)
+  if( type == "none" ){
+    plac.fit = PLAC_TI(Z, X, W, Ind1, Ind2, Dn, b_0, h_0, max.iter)
+  }else if( type == "independent" ){
+    plac.fit = PLAC_Tv(Z, ZFV_, X, W, Ind1, Ind2, Dn, b_0, h_0, max.iter)
   }else if( type %in% c("post-trunc", "pre-post-trunc") ){
-    plac.fit = PLAC_TvR1(ZFt, ZFV_, Z, X, W, Ind1, Ind2, Dn, b_0, h_0, max.iter)
+    plac.fit = PLAC_TvR(ZFt, ZFV_, Z, X, W, Ind1, Ind2, Dn, b_0, h_0, max.iter)
   }
 
   beta = rbind(Cox=b.cox, PLAC=plac.fit$b.hat)

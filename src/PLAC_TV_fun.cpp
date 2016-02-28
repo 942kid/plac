@@ -73,7 +73,7 @@ using Eigen::ArrayXd;
 //' @return risk-set indicators Y_i(w_k) of the form I(A_i <= w_k <= X_i).
 //' @export
 // [[Rcpp::export]]
-Eigen::MatrixXd SgInd1(Eigen::Map<Eigen::MatrixXd> X,
+Eigen::MatrixXd SgInd(Eigen::Map<Eigen::MatrixXd> X,
                        Eigen::Map<Eigen::ArrayXd> W){
 
     const int n(X.rows()), m(W.size());
@@ -96,7 +96,7 @@ Eigen::MatrixXd SgInd1(Eigen::Map<Eigen::MatrixXd> X,
 //' - I(w_k <= XA_j).
 //' @export
 // [[Rcpp::export]]
-Eigen::MatrixXd PwInd1(Eigen::Map<Eigen::MatrixXd> X,
+Eigen::MatrixXd PwInd(Eigen::Map<Eigen::MatrixXd> X,
                        Eigen::Map<Eigen::ArrayXd> W){
 
     const int n(X.rows()), m(W.size());
@@ -119,7 +119,7 @@ Eigen::MatrixXd PwInd1(Eigen::Map<Eigen::MatrixXd> X,
 //' @return the time-depependent covariate indicators of the form I(w_k > zeta).
 //' @export
 // [[Rcpp::export]]
-Eigen::MatrixXd TvInd1(Eigen::Map<Eigen::VectorXd> Zv,
+Eigen::MatrixXd TvInd(Eigen::Map<Eigen::VectorXd> Zv,
                        Eigen::Map<Eigen::ArrayXd> W){
 
     const int n(Zv.size()), m(W.size());
@@ -394,7 +394,8 @@ Eigen::MatrixXd SWE_Tv2(Eigen::Map<Eigen::MatrixXd> ZFV_,
     return J_ * V * J_;
 
 }
-//' C++ Function for Solving the PLAC Estimator (independent time-dependent)
+//' C++ Function for Solving the PLAC Estimator.
+//' (with time-dependent convariates independent of A^*)
 //'
 //' @param Z matrix for all the covariates history.
 //' @param ZFV_ matrix for all covariates at the each individual's
@@ -411,7 +412,7 @@ Eigen::MatrixXd SWE_Tv2(Eigen::Map<Eigen::MatrixXd> ZFV_,
 //' the PLAC estimator.
 //' @export
 // [[Rcpp::export]]
-List PLAC_Tv3(Eigen::Map<Eigen::MatrixXd> Z,
+List PLAC_Tv(Eigen::Map<Eigen::MatrixXd> Z,
               Eigen::Map<Eigen::MatrixXd> ZFV_,
               Eigen::Map<Eigen::MatrixXd> X,
               Eigen::Map<Eigen::ArrayXd> W,
