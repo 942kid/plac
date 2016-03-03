@@ -72,26 +72,6 @@ PLAC_Tv <- function(Z, ZFV_, X, W, Ind1, Ind2, Dn, b, h, K = 100L) {
     .Call('plac_PLAC_Tv', PACKAGE = 'plac', Z, ZFV_, X, W, Ind1, Ind2, Dn, b, h, K)
 }
 
-TvInd2 <- function(PD, Zv, W) {
-    .Call('plac_TvInd2', PACKAGE = 'plac', PD, Zv, W)
-}
-
-TvInd3 <- function(PD, Zv, W) {
-    .Call('plac_TvInd3', PACKAGE = 'plac', PD, Zv, W)
-}
-
-BetaTvR1 <- function(ZF, ZFV_, Z, X, Ind1, Ind2, b, h) {
-    .Call('plac_BetaTvR1', PACKAGE = 'plac', ZF, ZFV_, Z, X, Ind1, Ind2, b, h)
-}
-
-LambdaTvR1 <- function(ZF, Z, X, Ind1, Ind2, Dn, b, h) {
-    .Call('plac_LambdaTvR1', PACKAGE = 'plac', ZF, Z, X, Ind1, Ind2, Dn, b, h)
-}
-
-SWE_TvR1 <- function(ZF, ZFV_, Z, X, W, Ind1, Ind2, b, h) {
-    .Call('plac_SWE_TvR1', PACKAGE = 'plac', ZF, ZFV_, Z, X, W, Ind1, Ind2, b, h)
-}
-
 #' C++ Function for Solving the PLAC Estimator.
 #' (with time-dependent convariates depending on A^*)
 #'
