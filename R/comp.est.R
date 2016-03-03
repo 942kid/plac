@@ -19,9 +19,8 @@
 #' @references Wu, F. Kim, S. and Li, Y. "A Pairwise Likelihood Augmented Estimator for Left-Truncated Data with Time-Dependent Covariates." (\emph{in preparation})
 #' @references Wu, F., Kim, S., Qin, J., Saran, R. and Li, Y. (2015) "A Pairwise-Likelihood Augmented Estimator for the Cox Model Under Left-Truncation." (Submitted to \emph{Journal of American Statistical Association}.)
 #' @export
-PLAC = function(formula, data, id.var,
-                  td.var, type = "none", tjump,
-                  init.val = NULL, max.iter = 100, ...){
+PLAC = function(formula, data, id.var, td.var, type = "none", tjump,
+                init.val = NULL, max.iter = 100, ...){
   if( !inherits(formula, "formula") ) stop("A formula is required!")
   # grep the model.frame for later use
   mf = model.frame(formula=formula, data=data)

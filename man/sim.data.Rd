@@ -4,41 +4,53 @@
 \alias{sim.data}
 \title{Generate left-truncated (and right-cencored) data from the Cox model.}
 \usage{
-sim.data(n = 200, b = c(1, 1), distr.T = "weibull", shape.T = 2,
-  scale.T = 1, distr.A = "weibull", shape.A = 1, scale.A = 5,
-  p.A = 0.3, Cmax = Inf, fix.seed = NA)
+sim.data(n = 200, b = c(1, 1), time.dep = FALSE, Zv.depA = FALSE,
+  distr.T = "weibull", shape.T = 2, scale.T = 1, distr.A = "weibull",
+  shape.A = 1, scale.A = 5, p.A = 0.3, Cmax = Inf, fix.seed = NA)
 }
 \arguments{
-\item{n}{An integer for sample size.}
+\item{n}{the sample size.}
 
-\item{b}{A numeric vector for true regression coefficients.}
+\item{b}{a numeric vector for true regression coefficients.}
 
-\item{distr.T}{A character for the baseline survival time (T*) distribution
-("exp" or "weibull").}
+\item{time.dep}{logical, whether there is the time-dependent covariate (only
+one indicator function Zv = I(t >= \eta) is supported); the default is
+FALSE.}
 
-\item{shape.T}{The shape parameter for the Weibull distribution of T*.}
+\item{Zv.depA}{logical, whether the time-dependent covariate \code{Zv}
+depends on A^* (the only form supported is Zv = I(t >= \eta + A^*)); the
+default is FALSE.}
 
-\item{scale.T}{The scale parameter for the Exponential/Weibull distribution
-of T*.}
+\item{distr.T}{the baseline survival time (T*) distribution ("exp" or
+"weibull").}
 
-\item{distr.A}{A character for the baseline truncation time (A*) distribution
-("weibull", "unif" (Length-Biased Sampling) or "binomial").}
+\item{shape.T}{the shape parameter for the Weibull distribution of T*.}
 
-\item{shape.A}{The shape parameter for the Weibull distribution of A*.}
+\item{scale.T}{the scale parameter for the Exponential/Weibull distributiof
+T*.}
 
-\item{scale.A}{The scale parameter for the Weibull distribution of A*.}
+\item{distr.A}{the baseline truncation time (A*) distribution: either of
+\code{"weibull"} (the default), \code{"unif"} (Length-Biased Sampling),
+\code{"binomial"} or \code{"dunif"}). Note: If distribution name other than
+these are provided, \code{"unif"} will be used.}
 
-\item{p.A}{The success probability for the binomial distribution of A*.}
+\item{shape.A}{the shape parameter for the Weibull distribution of A*.}
 
-\item{Cmax}{The upper bound of the uniform distribution of the censoring time
+\item{scale.A}{the scale parameter for the Weibull distribution of A*.}
+
+\item{p.A}{the success probability for the binomial distribution of A*.}
+
+\item{Cmax}{the upper bound of the uniform distribution of the censoring time
 (C).}
 
-\item{fix.seed}{An optional random seed for simulation.}
+\item{fix.seed}{an optional random seed for simulation.}
 }
 \value{
-A data.frame containing the observed survival times (Ys), the
-  observed truncation times (As), the event indicator (Ds) and the covariates
-  (Zs).
+a list with a data.frame containing the observed survival times
+  (\code{Xs}), the observed truncation times (\code{As}), the event indicator
+  (\code{Ds}) and the covariates (\code{Zs}); a vector of certain quantiles
+  of Xs (\code{taus}); the censoring proportion (\code{PC}) and the
+  truncation proportiona (\code{PT}).
 }
 \description{
 Various baseline survival functions and truncation distribution are
@@ -47,6 +59,6 @@ available. Censoring rate can be designated through tuning the parameter
 }
 \examples{
 sim.data()
-sim.data(50, distr.A = "binomial", p.A = 0.8, Cmax = 5)
+sim.data(n = 50, time.dep = TRUE, distr.A = "binomial", p.A = 0.8, Cmax = 5)
 }
 

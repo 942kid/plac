@@ -11,14 +11,11 @@ using Eigen::VectorXd;
 using Eigen::ArrayXd;
 
 // C++ Functions:
-
-// SgInd() = C equivalent to sg.ind(): at-risk processes;
-// PwInd() = C modification to pw.ind(): truncation processes;
 // ScrBeta() = C equivalent to scr.b(): scrore function of beta;
 // FsrBeta() = C equivalent to fsr.b(): observed Fisher of beta;
 // Lambda() = C equivalent to lambda0(): self-consistent updating function for lambda_k's;
 // SWE() = C equivalent to sw(): sandwich variance-covariance estimator;
-// PLAC() = wrapper function to calculate the PLAC esimator and its SWE;
+// PLAC_TI() = wrapper function to calculate the PLAC esimator and its SWE;
 
 // Input data:
 // Z = mapped covariate matrix;
@@ -44,13 +41,14 @@ using Eigen::ArrayXd;
 // rij, Rij = (log) generalized odds ratio;
 // Q1ij, Q2ij = \int Q1(t) d\Lambda and \int Q2(t) d\Lambda;
 
+// [[Rcpp::export]]
 Eigen::VectorXd ScrBeta(Eigen::Map<Eigen::MatrixXd> Z,
                  Eigen::Map<Eigen::MatrixXd> X,
                  Eigen::Map<Eigen::MatrixXd> Ind1,
                  Eigen::Map<Eigen::MatrixXd> Ind2,
                  Eigen::VectorXd b,
                  Eigen::VectorXd h){
-  const int n(Z.rows()), p(Z.cols());
+  const int n(X.rows()), p(b.size());
   VectorXd UC_b(p), UP_b(p), Q1ij;
            UC_b.fill(0); UP_b.fill(0);
   double Lambda_diff, Rij, exbZi;
@@ -66,7 +64,7 @@ Eigen::VectorXd ScrBeta(Eigen::Map<Eigen::MatrixXd> Z,
   }
   return UC_b/n + UP_b/(n*(n-1));
 }
-
+// [[Rcpp::export]]
 Eigen::MatrixXd FsrBeta(Eigen::Map<Eigen::MatrixXd> Z,
                  Eigen::Map<Eigen::MatrixXd> X,
                  Eigen::Map<Eigen::MatrixXd> Ind1,
@@ -93,6 +91,37 @@ Eigen::MatrixXd FsrBeta(Eigen::Map<Eigen::MatrixXd> Z,
     }
   }
   return JC_b+JP_b/n/(n-1);
+}
+// [[Rcpp::export]]
+Eigen::MatrixXd Beta(Eigen::Map<Eigen::MatrixXd> Z,
+                        Eigen::Map<Eigen::MatrixXd> X,
+                        Eigen::Map<Eigen::MatrixXd> Ind1,
+                        Eigen::Map<Eigen::MatrixXd> Ind2,
+                        Eigen::VectorXd b,
+                        Eigen::VectorXd h){
+  const int n(Z.rows()), m(h.size()), p(Z.cols());
+  double Lambda_diff, Rij, exbZi, exbZj;
+  VectorXd UC_b(p), UP_b(p), Q1ij(p);
+  UC_b.fill(0); UP_b.fill(0);
+  MatrixXd JC_b(p,p), JP_b(p,p);
+  JC_b.fill(0); JP_b.fill(0);
+  for(int i = 0; i < n; ++i){
+    exbZi = exp(b.dot(Z.col(i)));
+    UC_b += (X(i,2) - h.dot(Ind1.col(i)) * exbZi) * Z.col(i);
+    JC_b += h.dot(Ind1.col(i))*exbZi/n * (Z.col(i)*Z.col(i).adjoint());
+    for(int j = 0; j < n; ++j){
+      exbZj = exp(b.dot(Z.col(j)));
+      Lambda_diff = h.dot(Ind2.col(i) - Ind2.col(j));
+      Rij = exp((exbZi - exbZj) * Lambda_diff);
+      Q1ij = (Z.col(i)*exbZi - Z.col(j)*exbZj) * Lambda_diff;
+      UP_b += -(Rij*Q1ij)/(1+Rij);
+      JP_b += Rij/pow(1+Rij,2)*Q1ij*Q1ij.adjoint() +
+              Rij/(1+Rij)*Lambda_diff*
+              (Z.col(i)*Z.col(i).adjoint()*exbZi -
+               Z.col(j)*Z.col(j).adjoint()*exbZj);
+    }
+  }
+  return (JC_b/n + JP_b/n/(n-1)).inverse() * (UC_b/n + UP_b/(n*(n-1)));
 }
 
 VectorXd Lambda(Eigen::Map<Eigen::MatrixXd> Z,
