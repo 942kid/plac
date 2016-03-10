@@ -75,18 +75,6 @@ PLAC_TDR <- function(ZF, ZFV_, Z, X, W, Ind1, Ind2, Dn, b, h, K = 100L) {
     .Call('plac_PLAC_TDR', PACKAGE = 'plac', ZF, ZFV_, Z, X, W, Ind1, Ind2, Dn, b, h, K)
 }
 
-ScrBeta <- function(Z, X, Ind1, Ind2, b, h) {
-    .Call('plac_ScrBeta', PACKAGE = 'plac', Z, X, Ind1, Ind2, b, h)
-}
-
-FsrBeta <- function(Z, X, Ind1, Ind2, b, h) {
-    .Call('plac_FsrBeta', PACKAGE = 'plac', Z, X, Ind1, Ind2, b, h)
-}
-
-Beta <- function(Z, X, Ind1, Ind2, b, h) {
-    .Call('plac_Beta', PACKAGE = 'plac', Z, X, Ind1, Ind2, b, h)
-}
-
 #' C++ Function for Solving the PLAC Estimator.
 #' (with time-invariant convariates only)
 #'

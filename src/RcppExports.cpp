@@ -83,54 +83,6 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
-// ScrBeta
-Eigen::VectorXd ScrBeta(Eigen::Map<Eigen::MatrixXd> Z, Eigen::Map<Eigen::MatrixXd> X, Eigen::Map<Eigen::MatrixXd> Ind1, Eigen::Map<Eigen::MatrixXd> Ind2, Eigen::VectorXd b, Eigen::VectorXd h);
-RcppExport SEXP plac_ScrBeta(SEXP ZSEXP, SEXP XSEXP, SEXP Ind1SEXP, SEXP Ind2SEXP, SEXP bSEXP, SEXP hSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< Eigen::Map<Eigen::MatrixXd> >::type Z(ZSEXP);
-    Rcpp::traits::input_parameter< Eigen::Map<Eigen::MatrixXd> >::type X(XSEXP);
-    Rcpp::traits::input_parameter< Eigen::Map<Eigen::MatrixXd> >::type Ind1(Ind1SEXP);
-    Rcpp::traits::input_parameter< Eigen::Map<Eigen::MatrixXd> >::type Ind2(Ind2SEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd >::type b(bSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd >::type h(hSEXP);
-    __result = Rcpp::wrap(ScrBeta(Z, X, Ind1, Ind2, b, h));
-    return __result;
-END_RCPP
-}
-// FsrBeta
-Eigen::MatrixXd FsrBeta(Eigen::Map<Eigen::MatrixXd> Z, Eigen::Map<Eigen::MatrixXd> X, Eigen::Map<Eigen::MatrixXd> Ind1, Eigen::Map<Eigen::MatrixXd> Ind2, Eigen::VectorXd b, Eigen::VectorXd h);
-RcppExport SEXP plac_FsrBeta(SEXP ZSEXP, SEXP XSEXP, SEXP Ind1SEXP, SEXP Ind2SEXP, SEXP bSEXP, SEXP hSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< Eigen::Map<Eigen::MatrixXd> >::type Z(ZSEXP);
-    Rcpp::traits::input_parameter< Eigen::Map<Eigen::MatrixXd> >::type X(XSEXP);
-    Rcpp::traits::input_parameter< Eigen::Map<Eigen::MatrixXd> >::type Ind1(Ind1SEXP);
-    Rcpp::traits::input_parameter< Eigen::Map<Eigen::MatrixXd> >::type Ind2(Ind2SEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd >::type b(bSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd >::type h(hSEXP);
-    __result = Rcpp::wrap(FsrBeta(Z, X, Ind1, Ind2, b, h));
-    return __result;
-END_RCPP
-}
-// Beta
-Eigen::MatrixXd Beta(Eigen::Map<Eigen::MatrixXd> Z, Eigen::Map<Eigen::MatrixXd> X, Eigen::Map<Eigen::MatrixXd> Ind1, Eigen::Map<Eigen::MatrixXd> Ind2, Eigen::VectorXd b, Eigen::VectorXd h);
-RcppExport SEXP plac_Beta(SEXP ZSEXP, SEXP XSEXP, SEXP Ind1SEXP, SEXP Ind2SEXP, SEXP bSEXP, SEXP hSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< Eigen::Map<Eigen::MatrixXd> >::type Z(ZSEXP);
-    Rcpp::traits::input_parameter< Eigen::Map<Eigen::MatrixXd> >::type X(XSEXP);
-    Rcpp::traits::input_parameter< Eigen::Map<Eigen::MatrixXd> >::type Ind1(Ind1SEXP);
-    Rcpp::traits::input_parameter< Eigen::Map<Eigen::MatrixXd> >::type Ind2(Ind2SEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd >::type b(bSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd >::type h(hSEXP);
-    __result = Rcpp::wrap(Beta(Z, X, Ind1, Ind2, b, h));
-    return __result;
-END_RCPP
-}
 // PLAC_TI
 List PLAC_TI(Eigen::Map<Eigen::MatrixXd> Z, Eigen::Map<Eigen::MatrixXd> X, Eigen::Map<Eigen::ArrayXd> W, Eigen::Map<Eigen::MatrixXd> Ind1, Eigen::Map<Eigen::MatrixXd> Ind2, Eigen::Map<Eigen::ArrayXd> Dn, Eigen::VectorXd b, Eigen::VectorXd h, int K);
 RcppExport SEXP plac_PLAC_TI(SEXP ZSEXP, SEXP XSEXP, SEXP WSEXP, SEXP Ind1SEXP, SEXP Ind2SEXP, SEXP DnSEXP, SEXP bSEXP, SEXP hSEXP, SEXP KSEXP) {

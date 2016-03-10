@@ -4,14 +4,10 @@
 \alias{PLAC}
 \title{Calculate the PLAC estimator when a time-dependent indicator presents}
 \usage{
-PLAC(formula, data, id.var = "ID", td.var = NULL, td.type = "none",
-  t.jump = NULL, init.val = NULL, max.iter = 100, ...)
+PLAC(ltrc.formula, ltrc.data, id.var = "ID", td.var = NULL,
+  td.type = "none", t.jump = NULL, init.val = NULL, max.iter = 100, ...)
 }
 \arguments{
-\item{formula}{a formula of of the form \code{Surv(A, Y, D) ~ Z}, where \code{Z} only include the time-invariate covariates.}
-
-\item{data}{a data.frame of the LTRC dataset including the responses, time-invariate covariates and the jump times for the time-depnencent covariate.}
-
 \item{id.var}{a name of the subject id in \code{data}.}
 
 \item{td.var}{a name of the time-dependent covariate in the output.}
@@ -21,6 +17,10 @@ PLAC(formula, data, id.var = "ID", td.var = NULL, td.type = "none",
 \item{t.jump}{a name of the jump time variable in \code{data}.}
 
 \item{init.val}{a list of the initial values of the coefficients and the baseline hazard function for the PLAC estimator.}
+
+\item{formula}{a formula of of the form \code{Surv(A, Y, D) ~ Z}, where \code{Z} only include the time-invariate covariates.}
+
+\item{data}{a data.frame of the LTRC dataset including the responses, time-invariate covariates and the jump times for the time-depnencent covariate.}
 }
 \value{
 a list of model fitting results for both conditional approach and the PLAC estimators.

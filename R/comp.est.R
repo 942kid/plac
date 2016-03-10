@@ -28,12 +28,12 @@
 #' @references Wu, F. Kim, S. and Li, Y. "A Pairwise Likelihood Augmented Estimator for Left-Truncated Data with Time-Dependent Covariates." (\emph{in preparation})
 #' @references Wu, F., Kim, S., Qin, J., Saran, R. and Li, Y. (2015) "A Pairwise-Likelihood Augmented Estimator for the Cox Model Under Left-Truncation." (Submitted to \emph{Journal of American Statistical Association}.)
 #' @export
-PLAC = function(formula, data, id.var = "ID",
+PLAC = function(ltrc.formula, ltrc.data, id.var = "ID",
                 td.var = NULL, td.type = "none", t.jump = NULL,
                 init.val = NULL, max.iter = 100, ...){
-  if( !inherits(formula, "formula") ) stop("A formula of the form 'Surv (A, Y, D) ~ Z' is required!")
+  if( !inherits(ltrc.formula, "formula") ) stop("A formula of the form 'Surv (A, Y, D) ~ Z' is required!")
   # grep the model.frame for later use
-  mf = model.frame(formula = formula, data = data)
+  mf = model.frame(formula = ltrc.formula, data = ltrc.data)
   # prepare the response and time-invariant covariate matrix
   X = as.matrix(model.response(mf))
   resp = gsub("Surv|\\(|\\)| ","",unlist(strsplit(names(mf)[1],",")))
@@ -47,11 +47,11 @@ PLAC = function(formula, data, id.var = "ID",
   Ind2 = PwInd(X, W)
   # number of events at each w_k
   Dn = as.numeric(rle(X[X[,3] == 1, 2])$lengths)
-  ZF = as.matrix(model.matrix(attr(mf, "terms"), data=mf)[ , -1], nrow = n)
+  ZF = as.matrix(model.matrix(attr(mf, "terms"), data = mf)[ , -1], nrow = n)
   colnames(ZF) = names(mf)[-1]
   if( td.type == "none"){
-    Z = ZF
-    cox.LTRC = coxph(formula = formula, data = data, method="breslow")
+    Z = t(ZF)
+    cox.LTRC = survival::coxph(formula = ltrc.formula, data = ltrc.data, method="breslow", model = TRUE)
   }else{
     # for "post-trunc", all subjects have pre-trunc Zv = 0.
     if( td.type == "post-trunc" ){
@@ -60,15 +60,9 @@ PLAC = function(formula, data, id.var = "ID",
     }
     ZFt = t(ZF)
     # the jump times of the time-dependent indicator (zeta)
-    ZV = data[[t.jump]]
-    # covariate values at the observed survival times
-    eval(parse(text = paste0("ZV_ = subset(data.count, select = ", td.var, ", tstop == ", resp[2],")[[1]]")))
-    ZFV_ = rbind(ZFt, ZV_)
-    IndZ = TvInd(ZV, W)
-    Za = array(c(rep(ZF, each = m), IndZ), c(m, n, p))
-    Z = matrix(aperm(Za, c(3, 1, 2)), m * p, n)
+    ZV = ltrc.data[[t.jump]]
     # need counting process expansion of the data
-    eval(parse(text = paste0("data.count = tmerge(data, data, id = ", id.var,
+    eval(parse(text = paste0("data.count = tmerge(ltrc.data, ltrc.data, id = ", id.var,
                              ", death = event(", resp[2], ", ", resp[3], "), ",
                              td.var, " = tdc(", t.jump, "))")))
     data.count$id = NULL
@@ -79,14 +73,20 @@ PLAC = function(formula, data, id.var = "ID",
                              resp[1], "> data.count$tstart] = data.count$",
                              resp[1], "[data.count$",
                              resp[1], "> data.count$tstart]")))
-    cox.LTRC = coxph(as.formula(paste0("Surv(tstart, tstop, death) ~ ",
+    # covariate values at the observed survival times
+    eval(parse(text = paste0("ZV_ = subset(data.count, select = ", td.var, ", tstop == ", resp[2],")[[1]]")))
+    ZFV_ = rbind(ZFt, ZV_)
+    IndZ = TvInd(ZV, W)
+    Za = array(c(rep(ZF, each = m), IndZ), c(m, n, p))
+    Z = matrix(aperm(Za, c(3, 1, 2)), m * p, n)
+    cox.LTRC = survival::coxph(as.formula(paste0("Surv(tstart, tstop, death) ~ ",
                                        paste(c(colnames(ZF), td.var),
                                              collapse = "+"))),
-                     data = data.count)
+                     data = data.count, model = TRUE)
 
   }
   b.cox = unname(coef(cox.LTRC))
-  h.cox = basehaz(cox.LTRC,centered=F)$hazard
+  h.cox = survival::basehaz(cox.LTRC, centered = FALSE)$hazard
   # get h from H
   if(h.cox[1]!=0){
     H.cox = c(0, unique(h.cox))
@@ -109,27 +109,36 @@ PLAC = function(formula, data, id.var = "ID",
     h_0 = init.val$h_0
   }
   p = length(b_0)
-
+  # Call the proper C++ wrapper function
   if( td.type == "none" ){
-    print("Calling PLAC_TI()...")
+    cat("Calling PLAC_TI()...\n")
     plac.fit = PLAC_TI(Z, X, W, Ind1, Ind2, Dn, b_0, h_0, max.iter)
   }else if( td.type == "independent" ){
     plac.fit = PLAC_TD(Z, ZFV_, X, W, Ind1, Ind2, Dn, b_0, h_0, max.iter)
   }else if( td.type %in% c("post-trunc", "pre-post-trunc") ){
     plac.fit = PLAC_TDR(ZFt, ZFV_, Z, X, W, Ind1, Ind2, Dn, b_0, h_0, max.iter)
   }
+  # summarizing fitting results
+  b = rbind(Cox = b.cox, PLAC = plac.fit$b.hat)
+  se.b = rbind(Cox = sqrt(diag(cox.LTRC$var)), PLAC = plac.fit$se.b.hat)
+  if( td.type == "none"){
+    colnames(b) = colnames(ZF)
+  }else{
+    colnames(b) = c(colnames(ZF), "ZV")
+  }
+  colnames(se.b) = colnames(b)
+  H0 = cbind(Cox = H.cox, PLAC = plac.fit$H0.hat)
+  se.H0 = cbind(Cox = se.H0.cox, PLAC = plac.fit$se.H0.hat)
 
-  beta = rbind(Cox=b.cox, PLAC=plac.fit$b.hat)
-  se.beta = rbind(Cox=sqrt(diag(cox.LTRC$var)), PLAC=plac.fit$se.b.hat)
-  colnames(beta) = colnames(se.beta) = c(colnames(ZF), "ZV")
-  H0 = cbind(Cox=H.cox, PLAC=plac.fit$H0.hat)
-  se.H0 = cbind(Cox=se.H0.cox, PLAC=plac.fit$se.H0.hat)
-
-  return(list(Event.Time = summ.cox$time,
-              b=beta,se.b=se.beta,
-              H0=H0, se.H0=se.H0,
-              sandwich=plac.fit$swe,
-              k=plac.fit$iter))
+  cat("Coefficient Estimates:\n")
+  print(b)
+  cat("SEs:\n")
+  print(se.b)
+  return(invisible(list(Event.Time = summ.cox$time,
+                        b = b, se.b = se.b,
+                        H0 = H0, se.H0 = se.H0,
+                        sandwich = plac.fit$swe,
+                        k = plac.fit$iter)))
 }
 
 #' Calulate the Values of the cumulative Hazard at Fixed Times
