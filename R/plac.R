@@ -1,6 +1,6 @@
-#' plac: A Package for Computating the Pairwise Likelihood Augmented Cox Estimator for Left-Truncated Data.
+#' A Package for Computating the Pairwise Likelihood Augmented Cox Estimator for Left-Truncated Data.
 #'
-#' The \code{plac} package provides both lower-level \code{C++} functions (\code{PLAC_TI()}, \code{PLAC_TV()} and \code{PLAC_TvR()}) and an R wrapper function \code{PLAC()} to calculate the pairwise likelihood augmented Cox estimator for left-truncated survival data as introduced in Wu et al. (2015).
+#' This package provides both lower-level \code{C++} functions (\code{PLAC_TI()}, \code{PLAC_TV()} and \code{PLAC_TvR()}) and an R wrapper function \code{PLAC()} to calculate the pairwise likelihood augmented Cox estimator for left-truncated survival data as proposed by Wu et al. (2015).
 #'
 #' @section Wrapper Function \code{PLAC()}:
 #' This \code{R} wrapper function calls different \code{C++} function depending on the covariate types \code{data} has.

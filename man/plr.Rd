@@ -4,14 +4,14 @@
 \alias{plr}
 \title{Perform the paired log-rank test.}
 \usage{
-plr(dat, A.name = "As", X.name = "Xs", D.name = "Ds")
+plr(dat, A.name = "As", Y.name = "Ys", D.name = "Ds")
 }
 \arguments{
 \item{dat}{a data.frame of left-truncated right-censored data.}
 
 \item{A.name}{the name of the truncation time variable in \code{dat}.}
 
-\item{X.name}{the name of the survival time variable in \code{dat}.}
+\item{Y.name}{the name of the survival time variable in \code{dat}.}
 
 \item{D.name}{the name of the event indicator in \code{dat}.}
 }

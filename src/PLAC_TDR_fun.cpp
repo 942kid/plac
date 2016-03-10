@@ -221,7 +221,7 @@ Eigen::MatrixXd SWE_TvR1(Eigen::Map<Eigen::MatrixXd> ZF,
 //' the PLAC estimator.
 //' @export
 // [[Rcpp::export]]
-List PLAC_TvR(Eigen::Map<Eigen::MatrixXd> ZF,
+List PLAC_TDR(Eigen::Map<Eigen::MatrixXd> ZF,
                Eigen::Map<Eigen::MatrixXd> ZFV_,
                Eigen::Map<Eigen::MatrixXd> Z,
                Eigen::Map<Eigen::MatrixXd> X,
