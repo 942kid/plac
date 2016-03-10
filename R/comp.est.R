@@ -45,7 +45,7 @@
 #'   lambda)}
 #'   \item{\code{k}}{The number of iteration for used for the PLAC
 #'   estimator}
-#'   \item{\code{summ}{A brief summary of the covariates effects}}
+#'   \item{\code{summ}}{A brief summary of the covariates effects}
 #'   }
 #' @references Wu, F. Kim, S. and Li, Y. "A Pairwise Likelihood Augmented
 #'   Estimator for Left-Truncated Data with Time-Dependent Covariates."
@@ -84,9 +84,10 @@ PLAC = function(ltrc.formula, ltrc.data, id.var = "ID",
     # for "post-trunc", all subjects have pre-trunc Zv = 0.
     if( td.type == "post-trunc" ){
       assign(td.var, rep(0, n))
-      eval(parse(text = paste0("ZF1 = cbind(ZF, ", td.var, ")")))
-      ZFt = t(ZF1)
+      eval(parse(text = paste0("ZF0 = cbind(ZF, ", td.var, ")")))
+      ZFt = t(ZF0)
     }
+    ZFt = t(ZF)
     # the jump times of the time-dependent indicator (zeta)
     ZV = ltrc.data[[t.jump]]
     # need counting process expansion of the data

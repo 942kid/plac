@@ -34,14 +34,21 @@ covariate.}
 }
 \value{
 a list of model fitting results for both conditional approach and the
-  PLAC estimators. \describe{ \item{\code{Event.Time}}{Ordered distinct
-  observed event times} \item{\code{b}}{Regression coefficients estiamtes}
+  PLAC estimators.
+  \describe{
+  \item{\code{Event.Time}}{Ordered distinct observed event times}
+  \item{\code{b}}{Regression coefficients estiamtes}
   \item{\code{se.b}}{Model-based SEs of the regression coefficients
-  estiamtes} \item{\code{H0}}{Estimated cumulative baseline hazard function}
+  estiamtes}
+  \item{\code{H0}}{Estimated cumulative baseline hazard function}
   \item{\code{se.H0}}{Model-based SEs of the estimated cumulative baseline
-  hazard function} \item{\code{sandwich}}{The sandwich estimator for (beta,
-  lambda)} \item{\code{k}}{The number of iteration for used for the PLAC
-  estimator} }
+  hazard function}
+  \item{\code{sandwich}}{The sandwich estimator for (beta,
+  lambda)}
+  \item{\code{k}}{The number of iteration for used for the PLAC
+  estimator}
+  \item{\code{summ}}{A brief summary of the covariates effects}
+  }
 }
 \description{
 Both a conditional approach Cox model and a pairwise likelihood augmented

@@ -223,7 +223,7 @@ List PLAC_TI(Eigen::Map<Eigen::MatrixXd> Z,
           Eigen::VectorXd b,
           Eigen::VectorXd h,
           int K = 100){
-  const int n(X.rows()), m(h.size()), p(b.size());
+  const int m(h.size()), p(b.size());
   int k(0);
   double diff(99);
   VectorXd b_hat = b, h_hat = h, b_new, h_new, Diff(p + m);

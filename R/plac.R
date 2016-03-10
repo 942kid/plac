@@ -8,8 +8,8 @@
 #' @section C++ Functions:
 #' The three \code{C++} functions \code{PLAC_TI()}, \code{PLAC_TV()} and \code{PLAC_TvR()} provide a direct interface to the algorithm in case that users need to supply more flexible time-dependent coavriates other than indicator functions.
 #'
-#' @references Wu, F., Kim, S., Qin, J., Saran, R. and Li, Y. (2015) "A Pairwise-Likelihood Augmented Estimator for the Cox Model Under Left-Truncation." (Submitted to \emph{Journal of American Statistical Association}.)
+#' @references Wu, F., Kim, S., Qin, J., Saran, R. and Li, Y. (2016) "A Pairwise-Likelihood Augmented Estimator for the Cox Model Under Left-Truncation." (Submitted to \emph{Journal of American Statistical Association}.)
 #' @docType package
-#' @name plac
+#' @name plac-package
 NULL
 #> NULL
