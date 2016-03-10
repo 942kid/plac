@@ -52,13 +52,22 @@ using Eigen::ArrayXd;
 // JC = conditional likelihood observed Fisher information;
 // JP = pairwise likelihood observed Fisher information;
 
-Eigen::MatrixXd TvInd2(Eigen::Map<Eigen::VectorXd> PD,
-                       Eigen::Map<Eigen::VectorXd> Zv,
+//' Generate time-depependent covariate indicators
+//'
+//' @param eta a random variable of the Z_v(t) value before the change point.
+//' @param zeta the change point (jump time).
+//' @param W the ordered observed event times.
+//' @return the time-depependent covariate indicators of the form Z_v(t) =
+//'   eta * I(w_k <= zeta).
+//' @export
+// [[Rcpp::export]]
+Eigen::MatrixXd TvInd2(Eigen::Map<Eigen::VectorXd> eta,
+                       Eigen::Map<Eigen::VectorXd> zeta,
                        Eigen::Map<Eigen::ArrayXd> W){
-  const int n(Zv.size()), m(W.size());
+  const int n(zeta.size()), m(W.size());
   MatrixXd out(m,n);
   for(int i = 0; i < n; ++i) {
-    out.col(i) = (W <= Zv(i)).cast<double>().matrix() * PD(i);
+    out.col(i) = (W <= zeta(i)).cast<double>().matrix() * eta(i);
   }
   return out;
 }

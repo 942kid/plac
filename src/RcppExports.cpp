@@ -31,14 +31,14 @@ BEGIN_RCPP
 END_RCPP
 }
 // TvInd
-Eigen::MatrixXd TvInd(Eigen::Map<Eigen::VectorXd> Zv, Eigen::Map<Eigen::ArrayXd> W);
-RcppExport SEXP plac_TvInd(SEXP ZvSEXP, SEXP WSEXP) {
+Eigen::MatrixXd TvInd(Eigen::Map<Eigen::VectorXd> zeta, Eigen::Map<Eigen::ArrayXd> W);
+RcppExport SEXP plac_TvInd(SEXP zetaSEXP, SEXP WSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< Eigen::Map<Eigen::VectorXd> >::type Zv(ZvSEXP);
+    Rcpp::traits::input_parameter< Eigen::Map<Eigen::VectorXd> >::type zeta(zetaSEXP);
     Rcpp::traits::input_parameter< Eigen::Map<Eigen::ArrayXd> >::type W(WSEXP);
-    __result = Rcpp::wrap(TvInd(Zv, W));
+    __result = Rcpp::wrap(TvInd(zeta, W));
     return __result;
 END_RCPP
 }
@@ -59,6 +59,19 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< Eigen::VectorXd >::type h(hSEXP);
     Rcpp::traits::input_parameter< int >::type K(KSEXP);
     __result = Rcpp::wrap(PLAC_TD(Z, ZFV_, X, W, Ind1, Ind2, Dn, b, h, K));
+    return __result;
+END_RCPP
+}
+// TvInd2
+Eigen::MatrixXd TvInd2(Eigen::Map<Eigen::VectorXd> eta, Eigen::Map<Eigen::VectorXd> zeta, Eigen::Map<Eigen::ArrayXd> W);
+RcppExport SEXP plac_TvInd2(SEXP etaSEXP, SEXP zetaSEXP, SEXP WSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< Eigen::Map<Eigen::VectorXd> >::type eta(etaSEXP);
+    Rcpp::traits::input_parameter< Eigen::Map<Eigen::VectorXd> >::type zeta(zetaSEXP);
+    Rcpp::traits::input_parameter< Eigen::Map<Eigen::ArrayXd> >::type W(WSEXP);
+    __result = Rcpp::wrap(TvInd2(eta, zeta, W));
     return __result;
 END_RCPP
 }

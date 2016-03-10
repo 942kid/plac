@@ -41,66 +41,13 @@ using Eigen::ArrayXd;
 // rij, Rij = (log) generalized odds ratio;
 // Q1ij, Q2ij = \int Q1(t) d\Lambda and \int Q2(t) d\Lambda;
 
-Eigen::VectorXd ScrBeta(Eigen::Map<Eigen::MatrixXd> Z,
-                        Eigen::Map<Eigen::MatrixXd> X,
-                        Eigen::Map<Eigen::MatrixXd> Ind1,
-                        Eigen::Map<Eigen::MatrixXd> Ind2,
-                        Eigen::VectorXd b,
-                        Eigen::VectorXd h){
-  const int n(X.rows()), p(b.size());
-  double H_diff, Rij;
-  VectorXd UC_b(p), UP_b(p), ebz(n), Q1ij(p);
-  UC_b.fill(0); UP_b.fill(0);
-  MatrixXd zebz(p,n);
-  ebz = (Z.adjoint() * b).array().exp();
-  zebz = ebz.adjoint().replicate(p,1).array() * Z.array();
-  for(int i = 0; i < n; ++i){
-    UC_b += (X(i,2) - h.dot(Ind1.col(i)) * ebz(i)) * Z.col(i);
-    for(int j = 0; j < n; ++j){
-      H_diff = h.dot(Ind2.col(i) - Ind2.col(j));
-      Rij = exp((ebz(i) - ebz(j)) * H_diff );
-      Q1ij = (zebz.col(i) - zebz.col(j)) * H_diff;
-      UP_b += -(Rij * Q1ij) / (1 + Rij);
-    }
-  }
-  return UC_b/n + UP_b/(n*(n-1));
-}
-
-Eigen::MatrixXd FsrBeta(Eigen::Map<Eigen::MatrixXd> Z,
-                        Eigen::Map<Eigen::MatrixXd> X,
-                        Eigen::Map<Eigen::MatrixXd> Ind1,
-                        Eigen::Map<Eigen::MatrixXd> Ind2,
-                        Eigen::VectorXd b,
-                        Eigen::VectorXd h){
-  const int n(X.rows()), m(h.size()), p(b.size());
-  double H_diff, Rij;
-  VectorXd Q1ij(p), ebz(n);
-  MatrixXd JC_b(p, p), JP_b(p, p), zebz(p, n);
-  JC_b.fill(0); JP_b.fill(0);
-  ebz = (Z.adjoint() * b).array().exp();
-  zebz = ebz.adjoint().replicate(p,1).array() * Z.array();
-  for(int i = 0; i < n; ++i){
-    JC_b += h.dot(Ind1.col(i)) * ebz(i)  * (Z.col(i) * Z.col(i).adjoint());
-    for(int j = 0; j < n; ++j){
-      H_diff = h.dot(Ind2.col(i) - Ind2.col(j));
-      Rij = exp((ebz(i) - ebz(j)) * H_diff);
-      Q1ij = (zebz.col(i) - zebz.col(j)) * H_diff;
-      JP_b += Rij / pow(1 + Rij, 2) * Q1ij * Q1ij.adjoint() +
-        Rij / (1 + Rij) * H_diff *
-        (Z.col(i) * Z.col(i).adjoint() * ebz(i) -
-         Z.col(j) * Z.col(j).adjoint() * ebz(j));
-    }
-  }
-  return JC_b / n + JP_b / n / (n - 1);
-}
-
 Eigen::MatrixXd Beta(Eigen::Map<Eigen::MatrixXd> Z,
                         Eigen::Map<Eigen::MatrixXd> X,
                         Eigen::Map<Eigen::MatrixXd> Ind1,
                         Eigen::Map<Eigen::MatrixXd> Ind2,
                         Eigen::VectorXd b,
                         Eigen::VectorXd h){
-  const int n(X.rows()), m(h.size()), p(b.size());
+  const int n(X.rows()), p(b.size());
   double H_diff, Rij;
   VectorXd UC_b(p), UP_b(p), ebz(n), Q1ij(p);
   UC_b.fill(0); UP_b.fill(0);
@@ -132,7 +79,7 @@ VectorXd Lambda(Eigen::Map<Eigen::MatrixXd> Z,
                 Eigen::Map<Eigen::ArrayXd> Dn,
                 Eigen::VectorXd b,
                 Eigen::VectorXd h){
-  const int n(X.rows()), m(h.size()), p(b.size());
+  const int n(X.rows()), m(h.size());
   double Rij;
   VectorXd UC_Lambda(m), UP_Lambda(m), Ind2ij(m), ebz(n);
            UC_Lambda.fill(0); UP_Lambda.fill(0);

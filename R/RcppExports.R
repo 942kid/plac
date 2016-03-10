@@ -24,12 +24,12 @@ PwInd <- function(X, W) {
 
 #' Generate time-depependent covariate indicators
 #'
-#' @param Zv the jump time.
+#' @param zeta the change point (jump time) of Z_v(t).
 #' @param W the ordered observed event times.
-#' @return the time-depependent covariate indicators of the form I(w_k > zeta).
+#' @return the time-depependent covariate of the form Z_v(t) = I(w_k > zeta).
 #' @export
-TvInd <- function(Zv, W) {
-    .Call('plac_TvInd', PACKAGE = 'plac', Zv, W)
+TvInd <- function(zeta, W) {
+    .Call('plac_TvInd', PACKAGE = 'plac', zeta, W)
 }
 
 #' C++ Function for Solving the PLAC Estimator.
@@ -51,6 +51,18 @@ TvInd <- function(Zv, W) {
 #' @export
 PLAC_TD <- function(Z, ZFV_, X, W, Ind1, Ind2, Dn, b, h, K = 100L) {
     .Call('plac_PLAC_TD', PACKAGE = 'plac', Z, ZFV_, X, W, Ind1, Ind2, Dn, b, h, K)
+}
+
+#' Generate time-depependent covariate indicators
+#'
+#' @param eta a random variable of the Z_v(t) value before the change point.
+#' @param zeta the change point (jump time).
+#' @param W the ordered observed event times.
+#' @return the time-depependent covariate indicators of the form Z_v(t) =
+#'   eta * I(w_k <= zeta).
+#' @export
+TvInd2 <- function(eta, zeta, W) {
+    .Call('plac_TvInd2', PACKAGE = 'plac', eta, zeta, W)
 }
 
 #' C++ Function for Solving the PLAC Estimator.

@@ -93,17 +93,17 @@ Eigen::MatrixXd PwInd(Eigen::Map<Eigen::MatrixXd> X,
 
 //' Generate time-depependent covariate indicators
 //'
-//' @param Zv the jump time.
+//' @param zeta the change point (jump time) of Z_v(t).
 //' @param W the ordered observed event times.
-//' @return the time-depependent covariate indicators of the form I(w_k > zeta).
+//' @return the time-depependent covariate of the form Z_v(t) = I(w_k > zeta).
 //' @export
 // [[Rcpp::export]]
-Eigen::MatrixXd TvInd(Eigen::Map<Eigen::VectorXd> Zv,
+Eigen::MatrixXd TvInd(Eigen::Map<Eigen::VectorXd> zeta,
                       Eigen::Map<Eigen::ArrayXd> W){
-  const int n(Zv.size()), m(W.size());
+  const int n(zeta.size()), m(W.size());
   MatrixXd out(m, n);
 	for(int i = 0; i < n; ++i) {
-		out.col(i) = (W > Zv(i)).cast<double>().matrix();
+		out.col(i) = (W > zeta(i)).cast<double>().matrix();
 	}
 	return out;
 }
