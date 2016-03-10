@@ -1,36 +1,56 @@
 #' Calculate the PLAC estimator when a time-dependent indicator presents
 #'
-#' Both a conditional approach Cox model and a pairwise likelihood augmented estimator are fitted and the corresponding results are returned in a list.
-#' @param formula a formula of of the form \code{Surv(A, Y, D) ~ Z}, where \code{Z} only include the time-invariate covariates.
-#' @param data a data.frame of the LTRC dataset including the responses, time-invariate covariates and the jump times for the time-depnencent covariate.
+#' Both a conditional approach Cox model and a pairwise likelihood augmented
+#' estimator are fitted and the corresponding results are returned in a list.
+#' @param formula a formula of of the form \code{Surv(A, Y, D) ~ Z}, where
+#'   \code{Z} only include the time-invariate covariates.
+#' @param data a data.frame of the LTRC dataset including the responses,
+#'   time-invariate covariates and the jump times for the time-depnencent
+#'   covariate.
 #' @param id.var a name of the subject id in \code{data}.
 #' @param td.var  a name of the time-dependent covariate in the output.
-#' @param td.type the type of the time-dependent covariate. Either one of \code{c("none", "independent", "post-trunc", "pre-post-trunc")}. See Details.
+#' @param td.type the type of the time-dependent covariate. Either one of
+#'   \code{c("none", "independent", "post-trunc", "pre-post-trunc")}. See
+#'   Details.
 #' @param t.jump a name of the jump time variable in \code{data}.
-#' @param init.val a list of the initial values of the coefficients and the baseline hazard function for the PLAC estimator.
+#' @param init.val a list of the initial values of the coefficients and the
+#'   baseline hazard function for the PLAC estimator.
+#' @param print.result logical, if a brief summary of the regression coefficient
+#'   estiamtes should be printed out.
 #' @useDynLib plac
 #' @importFrom Rcpp sourceCpp
 #' @importFrom survival Surv tmerge coxph
-#' @details The formula should have the same format as used in \code{coxph()}, where \code{A} is the truncation time (\code{tstart}), \code{Y} is the survival time (\code{tstop}) and \code{D} is the status indicator (\code{event}).
-#' \code{td.type} is used to determine which \code{C++} function will be invoked: either \code{PLAC_TI} (if \code{td.type = "none"}), \code{PLAC_TD} (if \code{td.type = "independent"}) or \code{PLAC_TDR}) (if \code{td.type \%in\% c("post-trunc", "pre-post-trunc")}).
-#' For \code{td.type = "post-trunc"}, the pre-truncation values for the time-dependent covariate will be set to be zero for all subjects.
+#' @details The formula should have the same format as used in \code{coxph()},
+#'   where \code{A} is the truncation time (\code{tstart}), \code{Y} is the
+#'   survival time (\code{tstop}) and \code{D} is the status indicator
+#'   (\code{event}). \code{td.type} is used to determine which \code{C++}
+#'   function will be invoked: either \code{PLAC_TI} (if \code{td.type =
+#'   "none"}), \code{PLAC_TD} (if \code{td.type = "independent"}) or
+#'   \code{PLAC_TDR}) (if \code{td.type \%in\% c("post-trunc",
+#'   "pre-post-trunc")}). For \code{td.type = "post-trunc"}, the pre-truncation
+#'   values for the time-dependent covariate will be set to be zero for all
+#'   subjects.
 #'
-#' @return a list of model fitting results for both conditional approach and the PLAC estimators.
-#' \describe{
-#'   \item{\code{Event.Time}}{Ordered distinct observed event times}
-#'   \item{\code{b}}{Regression coefficients estiamtes}
-#'   \item{\code{se.b}}{Model-based SEs of the regression coefficients estiamtes}
-#'   \item{\code{H0}}{Estimated cumulative baseline hazard function}
-#'   \item{\code{se.H0}}{Model-based SEs of the estimated cumulative baseline hazard function}
-#'   \item{\code{sandwich}}{The sandwich estimator for (beta, lambda)}
-#'   \item{\code{k}}{The number of iteration for used for the PLAC estimator}
-#' }
-#' @references Wu, F. Kim, S. and Li, Y. "A Pairwise Likelihood Augmented Estimator for Left-Truncated Data with Time-Dependent Covariates." (\emph{in preparation})
-#' @references Wu, F., Kim, S., Qin, J., Saran, R. and Li, Y. (2015) "A Pairwise-Likelihood Augmented Estimator for the Cox Model Under Left-Truncation." (Submitted to \emph{Journal of American Statistical Association}.)
+#' @return a list of model fitting results for both conditional approach and the
+#'   PLAC estimators. \describe{ \item{\code{Event.Time}}{Ordered distinct
+#'   observed event times} \item{\code{b}}{Regression coefficients estiamtes}
+#'   \item{\code{se.b}}{Model-based SEs of the regression coefficients
+#'   estiamtes} \item{\code{H0}}{Estimated cumulative baseline hazard function}
+#'   \item{\code{se.H0}}{Model-based SEs of the estimated cumulative baseline
+#'   hazard function} \item{\code{sandwich}}{The sandwich estimator for (beta,
+#'   lambda)} \item{\code{k}}{The number of iteration for used for the PLAC
+#'   estimator} }
+#' @references Wu, F. Kim, S. and Li, Y. "A Pairwise Likelihood Augmented
+#'   Estimator for Left-Truncated Data with Time-Dependent Covariates."
+#'   (\emph{in preparation})
+#' @references Wu, F., Kim, S., Qin, J., Saran, R. and Li, Y. (2015) "A
+#'   Pairwise-Likelihood Augmented Estimator for the Cox Model Under
+#'   Left-Truncation." (Submitted to \emph{Journal of American Statistical
+#'   Association}.)
 #' @export
 PLAC = function(ltrc.formula, ltrc.data, id.var = "ID",
                 td.var = NULL, td.type = "none", t.jump = NULL,
-                init.val = NULL, max.iter = 100, ...){
+                init.val = NULL, max.iter = 100, print.result = TRUE, ...){
   if( !inherits(ltrc.formula, "formula") ) stop("A formula of the form 'Surv (A, Y, D) ~ Z' is required!")
   # grep the model.frame for later use
   mf = model.frame(formula = ltrc.formula, data = ltrc.data)
@@ -50,15 +70,16 @@ PLAC = function(ltrc.formula, ltrc.data, id.var = "ID",
   ZF = as.matrix(model.matrix(attr(mf, "terms"), data = mf)[ , -1], nrow = n)
   colnames(ZF) = names(mf)[-1]
   if( td.type == "none"){
+    p = ncol(ZF)
     Z = t(ZF)
     cox.LTRC = survival::coxph(formula = ltrc.formula, data = ltrc.data, method="breslow", model = TRUE)
   }else{
     # for "post-trunc", all subjects have pre-trunc Zv = 0.
     if( td.type == "post-trunc" ){
       assign(td.var, rep(0, n))
-      eval(parse(text = paste0("ZF = cbind(ZF, ", td.var, ")")))
+      eval(parse(text = paste0("ZF1 = cbind(ZF, ", td.var, ")")))
+      ZFt = t(ZF1)
     }
-    ZFt = t(ZF)
     # the jump times of the time-dependent indicator (zeta)
     ZV = ltrc.data[[t.jump]]
     # need counting process expansion of the data
@@ -75,14 +96,15 @@ PLAC = function(ltrc.formula, ltrc.data, id.var = "ID",
                              resp[1], "> data.count$tstart]")))
     # covariate values at the observed survival times
     eval(parse(text = paste0("ZV_ = subset(data.count, select = ", td.var, ", tstop == ", resp[2],")[[1]]")))
-    ZFV_ = rbind(ZFt, ZV_)
+    ZFV_ = rbind(t(ZF), ZV_)
+    p = nrow(ZFV_)
     IndZ = TvInd(ZV, W)
     Za = array(c(rep(ZF, each = m), IndZ), c(m, n, p))
     Z = matrix(aperm(Za, c(3, 1, 2)), m * p, n)
     cox.LTRC = survival::coxph(as.formula(paste0("Surv(tstart, tstop, death) ~ ",
-                                       paste(c(colnames(ZF), td.var),
-                                             collapse = "+"))),
-                     data = data.count, model = TRUE)
+                                                 paste(c(colnames(ZF), td.var),
+                                                       collapse = "+"))),
+                               data = data.count, model = TRUE)
 
   }
   b.cox = unname(coef(cox.LTRC))
@@ -108,37 +130,45 @@ PLAC = function(ltrc.formula, ltrc.data, id.var = "ID",
     b_0 = init.val$b_0
     h_0 = init.val$h_0
   }
-  p = length(b_0)
   # Call the proper C++ wrapper function
   if( td.type == "none" ){
     cat("Calling PLAC_TI()...\n")
     plac.fit = PLAC_TI(Z, X, W, Ind1, Ind2, Dn, b_0, h_0, max.iter)
   }else if( td.type == "independent" ){
+    cat("Calling PLAC_TD()...\n")
     plac.fit = PLAC_TD(Z, ZFV_, X, W, Ind1, Ind2, Dn, b_0, h_0, max.iter)
   }else if( td.type %in% c("post-trunc", "pre-post-trunc") ){
+    cat("Calling PLAC_TDR()...\n")
     plac.fit = PLAC_TDR(ZFt, ZFV_, Z, X, W, Ind1, Ind2, Dn, b_0, h_0, max.iter)
   }
   # summarizing fitting results
-  b = rbind(Cox = b.cox, PLAC = plac.fit$b.hat)
-  se.b = rbind(Cox = sqrt(diag(cox.LTRC$var)), PLAC = plac.fit$se.b.hat)
-  if( td.type == "none"){
-    colnames(b) = colnames(ZF)
+  b = cbind(Cox = b.cox, PLAC = plac.fit$b.hat)
+  se.b = cbind(Cox = sqrt(diag(cox.LTRC$var)), PLAC = plac.fit$se.b.hat)
+  if( td.type == "none" ){
+    rownames(b) = colnames(ZF)
   }else{
-    colnames(b) = c(colnames(ZF), "ZV")
+    rownames(b) = c(colnames(ZF), td.var)
   }
-  colnames(se.b) = colnames(b)
+  rownames(se.b) = rownames(b)
   H0 = cbind(Cox = H.cox, PLAC = plac.fit$H0.hat)
   se.H0 = cbind(Cox = se.H0.cox, PLAC = plac.fit$se.H0.hat)
 
-  cat("Coefficient Estimates:\n")
-  print(b)
-  cat("SEs:\n")
-  print(se.b)
+  rslt = cbind(est.Cox = b[ , 1], se.Cox = se.b[ , 1],
+               p.Cox = pnorm(2 * abs(b[ , 1] / se.b[ , 1]), lower.tail = FALSE),
+               est.PLAC = b[ , 2], se.PLAC = se.b[ , 2],
+               p.PLAC = pnorm(2 * abs(b[ , 2] / se.b[ , 2]), lower.tail = FALSE))
+  rslt = format(round(rslt, 3), nsmall = 3)
+  if( print.result ){
+    cat("Coefficient Estimates:\n")
+    print(rslt)
+  }
+
   return(invisible(list(Event.Time = summ.cox$time,
                         b = b, se.b = se.b,
                         H0 = H0, se.H0 = se.H0,
                         sandwich = plac.fit$swe,
-                        k = plac.fit$iter)))
+                        k = plac.fit$iter,
+                        summ = rslt)))
 }
 
 #' Calulate the Values of the cumulative Hazard at Fixed Times

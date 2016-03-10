@@ -5,46 +5,68 @@
 \title{Calculate the PLAC estimator when a time-dependent indicator presents}
 \usage{
 PLAC(ltrc.formula, ltrc.data, id.var = "ID", td.var = NULL,
-  td.type = "none", t.jump = NULL, init.val = NULL, max.iter = 100, ...)
+  td.type = "none", t.jump = NULL, init.val = NULL, max.iter = 100,
+  print.result = TRUE, ...)
 }
 \arguments{
 \item{id.var}{a name of the subject id in \code{data}.}
 
 \item{td.var}{a name of the time-dependent covariate in the output.}
 
-\item{td.type}{the type of the time-dependent covariate. Either one of \code{c("none", "independent", "post-trunc", "pre-post-trunc")}. See Details.}
+\item{td.type}{the type of the time-dependent covariate. Either one of
+\code{c("none", "independent", "post-trunc", "pre-post-trunc")}. See
+Details.}
 
 \item{t.jump}{a name of the jump time variable in \code{data}.}
 
-\item{init.val}{a list of the initial values of the coefficients and the baseline hazard function for the PLAC estimator.}
+\item{init.val}{a list of the initial values of the coefficients and the
+baseline hazard function for the PLAC estimator.}
 
-\item{formula}{a formula of of the form \code{Surv(A, Y, D) ~ Z}, where \code{Z} only include the time-invariate covariates.}
+\item{print.result}{logical, if a brief summary of the regression coefficient
+estiamtes should be printed out.}
 
-\item{data}{a data.frame of the LTRC dataset including the responses, time-invariate covariates and the jump times for the time-depnencent covariate.}
+\item{formula}{a formula of of the form \code{Surv(A, Y, D) ~ Z}, where
+\code{Z} only include the time-invariate covariates.}
+
+\item{data}{a data.frame of the LTRC dataset including the responses,
+time-invariate covariates and the jump times for the time-depnencent
+covariate.}
 }
 \value{
-a list of model fitting results for both conditional approach and the PLAC estimators.
-\describe{
-  \item{\code{Event.Time}}{Ordered distinct observed event times}
-  \item{\code{b}}{Regression coefficients estiamtes}
-  \item{\code{se.b}}{Model-based SEs of the regression coefficients estiamtes}
-  \item{\code{H0}}{Estimated cumulative baseline hazard function}
-  \item{\code{se.H0}}{Model-based SEs of the estimated cumulative baseline hazard function}
-  \item{\code{sandwich}}{The sandwich estimator for (beta, lambda)}
-  \item{\code{k}}{The number of iteration for used for the PLAC estimator}
-}
+a list of model fitting results for both conditional approach and the
+  PLAC estimators. \describe{ \item{\code{Event.Time}}{Ordered distinct
+  observed event times} \item{\code{b}}{Regression coefficients estiamtes}
+  \item{\code{se.b}}{Model-based SEs of the regression coefficients
+  estiamtes} \item{\code{H0}}{Estimated cumulative baseline hazard function}
+  \item{\code{se.H0}}{Model-based SEs of the estimated cumulative baseline
+  hazard function} \item{\code{sandwich}}{The sandwich estimator for (beta,
+  lambda)} \item{\code{k}}{The number of iteration for used for the PLAC
+  estimator} }
 }
 \description{
-Both a conditional approach Cox model and a pairwise likelihood augmented estimator are fitted and the corresponding results are returned in a list.
+Both a conditional approach Cox model and a pairwise likelihood augmented
+estimator are fitted and the corresponding results are returned in a list.
 }
 \details{
-The formula should have the same format as used in \code{coxph()}, where \code{A} is the truncation time (\code{tstart}), \code{Y} is the survival time (\code{tstop}) and \code{D} is the status indicator (\code{event}).
-\code{td.type} is used to determine which \code{C++} function will be invoked: either \code{PLAC_TI} (if \code{td.type = "none"}), \code{PLAC_TD} (if \code{td.type = "independent"}) or \code{PLAC_TDR}) (if \code{td.type \%in\% c("post-trunc", "pre-post-trunc")}).
-For \code{td.type = "post-trunc"}, the pre-truncation values for the time-dependent covariate will be set to be zero for all subjects.
+The formula should have the same format as used in \code{coxph()},
+  where \code{A} is the truncation time (\code{tstart}), \code{Y} is the
+  survival time (\code{tstop}) and \code{D} is the status indicator
+  (\code{event}). \code{td.type} is used to determine which \code{C++}
+  function will be invoked: either \code{PLAC_TI} (if \code{td.type =
+  "none"}), \code{PLAC_TD} (if \code{td.type = "independent"}) or
+  \code{PLAC_TDR}) (if \code{td.type \%in\% c("post-trunc",
+  "pre-post-trunc")}). For \code{td.type = "post-trunc"}, the pre-truncation
+  values for the time-dependent covariate will be set to be zero for all
+  subjects.
 }
 \references{
-Wu, F. Kim, S. and Li, Y. "A Pairwise Likelihood Augmented Estimator for Left-Truncated Data with Time-Dependent Covariates." (\emph{in preparation})
+Wu, F. Kim, S. and Li, Y. "A Pairwise Likelihood Augmented
+  Estimator for Left-Truncated Data with Time-Dependent Covariates."
+  (\emph{in preparation})
 
-Wu, F., Kim, S., Qin, J., Saran, R. and Li, Y. (2015) "A Pairwise-Likelihood Augmented Estimator for the Cox Model Under Left-Truncation." (Submitted to \emph{Journal of American Statistical Association}.)
+Wu, F., Kim, S., Qin, J., Saran, R. and Li, Y. (2015) "A
+  Pairwise-Likelihood Augmented Estimator for the Cox Model Under
+  Left-Truncation." (Submitted to \emph{Journal of American Statistical
+  Association}.)
 }
 
