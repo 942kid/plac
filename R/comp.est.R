@@ -97,8 +97,9 @@ PLAC = function(ltrc.formula, ltrc.data, id.var = "ID",
       assign(td.var, rep(0, n))
       eval(parse(text = paste0("ZF0 = cbind(ZF, ", td.var, ")")))
       ZFt = t(ZF0)
+    }else{
+      ZFt = t(ZF)
     }
-    ZFt = t(ZF)
     # the jump times of the time-dependent indicator (zeta)
     ZV = ltrc.data[[t.jump]]
     # need counting process expansion of the data
