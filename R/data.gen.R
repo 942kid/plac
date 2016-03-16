@@ -36,10 +36,15 @@
 #'   of Ys (\code{taus}); the censoring proportion (\code{PC}) and the
 #'   truncation proportiona (\code{PT}).
 #' @examples
-#' sim.data()
-#' sim.data(n = 50, time.dep = TRUE, distr.A = "binomial", p.A = 0.8, Cmax = 5)
+#' # With time-invariant covariates only
+#' sim.ltrc(n = 100)
+#' # With one time-dependent covariate
+#' sim.ltrc(n = 100, time.dep = TRUE, distr.A = "binomial", p.A = 0.8, Cmax = 5)
+#' # With one time-dependent covariate with dependence on the truncation time
+#' sim.ltrc(n = 100, time.dep = TRUE, Zv.depA = TRUE, Cmax = 5)
 #' @export
-sim.ltrc = function(n=200, b = c(1,1), time.dep = FALSE, Zv.depA = FALSE,
+sim.ltrc = function(n=200, b = c(1,1),
+                    time.dep = FALSE, Zv.depA = FALSE,
                     distr.T = "weibull",
                     shape.T = 2, scale.T = 1,
                     meanlog.T = 0, sdlog.T = 1,

@@ -66,6 +66,18 @@ The formula should have the same format as used in \code{coxph()},
   values for the time-dependent covariate will be set to be zero for all
   subjects.
 }
+\examples{
+# When only time-invariant covariates are involved
+dat = sim.ltrc(n = 100)
+PLAC(ltrc.formula = Surv(As, Ys, Ds) ~ Z1 + Z2, ltrc.data = dat, td.type = "none")
+# When there is a time-dependent covariate that is independent of the truncation time
+dat = sim.ltrc(n = 100, time.dep = TRUE, distr.A = "binomial", p.A = 0.8, Cmax = 5)
+PLAC(ltrc.formula = Surv(As, Ys, Ds) ~ Z, ltrc.data = dat, td.type = "independent", td.var = "Zv", t.jump = "zeta")
+# When there is a time-dependent covariate that depends on the truncation time
+dat = sim.ltrc(n = 100, time.dep = TRUE, Zv.depA = TRUE, Cmax = 5)
+PLAC(ltrc.formula = Surv(As, Ys, Ds) ~ Z, ltrc.data = dat, td.type = "post-trunc", td.var = "Zv", t.jump = "zeta")
+
+}
 \references{
 Wu, F. Kim, S. and Li, Y. "A Pairwise Likelihood Augmented
   Estimator for Left-Truncated Data with Time-Dependent Covariates."

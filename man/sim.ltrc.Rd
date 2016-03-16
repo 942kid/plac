@@ -62,7 +62,11 @@ available. Censoring rate can be designated through tuning the parameter
 \code{Cmax}; \code{Cmas = Inf} means no censoring.
 }
 \examples{
-sim.data()
-sim.data(n = 50, time.dep = TRUE, distr.A = "binomial", p.A = 0.8, Cmax = 5)
+# With time-invariant covariates only
+sim.ltrc(n = 100)
+# With one time-dependent covariate
+sim.ltrc(n = 100, time.dep = TRUE, distr.A = "binomial", p.A = 0.8, Cmax = 5)
+# With one time-dependent covariate with dependence on the truncation time
+sim.ltrc(n = 100, time.dep = TRUE, Zv.depA = TRUE, Cmax = 5)
 }
 
