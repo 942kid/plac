@@ -58,19 +58,19 @@
 #'   Association}.)
 #' @examples
 #' # When only time-invariant covariates are involved
-#' dat = sim.ltrc(n = 100)$dat
+#' dat1 = sim.ltrc(n = 50)$dat
 #' PLAC(ltrc.formula = Surv(As, Ys, Ds) ~ Z1 + Z2,
-#'      ltrc.data = dat, td.type = "none")
+#'      ltrc.data = dat1, td.type = "none")
 #' # When there is a time-dependent covariate that is independent of the truncation time
-#' dat = sim.ltrc(n = 100, time.dep = TRUE,
+#' dat2 = sim.ltrc(n = 50, time.dep = TRUE,
 #'                distr.A = "binomial", p.A = 0.8, Cmax = 5)$dat
 #' PLAC(ltrc.formula = Surv(As, Ys, Ds) ~ Z,
-#'      ltrc.data = dat, td.type = "independent",
+#'      ltrc.data = dat2, td.type = "independent",
 #'      td.var = "Zv", t.jump = "zeta")
 #' # When there is a time-dependent covariate that depends on the truncation time
-#' dat = sim.ltrc(n = 100, time.dep = TRUE, Zv.depA = TRUE, Cmax = 5)$dat
+#' dat3 = sim.ltrc(n = 50, time.dep = TRUE, Zv.depA = TRUE, Cmax = 5)$dat
 #' PLAC(ltrc.formula = Surv(As, Ys, Ds) ~ Z,
-#'      ltrc.data = dat, td.type = "post-trunc",
+#'      ltrc.data = dat3, td.type = "post-trunc",
 #'      td.var = "Zv", t.jump = "zeta")
 #'
 #' @export
@@ -103,6 +103,7 @@ PLAC = function(ltrc.formula, ltrc.data, id.var = "ID",
     # for "post-trunc", all subjects have pre-trunc Zv = 0.
     if( td.type == "post-trunc" ){
       assign(td.var, rep(0, n))
+      ZF0 = NULL
       eval(parse(text = paste0("ZF0 = cbind(ZF, ", td.var, ")")))
       ZFt = t(ZF0)
     }else{
@@ -123,6 +124,7 @@ PLAC = function(ltrc.formula, ltrc.data, id.var = "ID",
                              resp[1], "[data.count$",
                              resp[1], "> data.count$tstart]")))
     # covariate values at the observed survival times
+    ZV_ = NULL
     eval(parse(text = paste0("ZV_ = subset(data.count, select = ", td.var, ", tstop == ", resp[2],")[[1]]")))
     ZFV_ = rbind(t(ZF), ZV_)
     p = nrow(ZFV_)
