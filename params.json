@@ -1,0 +1,6 @@
+{
+  "name": "Plac",
+  "tagline": "A Pairwise Likelihood Augmented Cox Estimator for Truncated Data",
+  "body": "## R package 'plac' version 0.1.0\r\n\r\n[![Travis-CI Build Status](https://travis-ci.org/942kid/plac.svg?branch=master)](https://travis-ci.org/942kid/plac)\r\n[![Coverage Status](https://img.shields.io/codecov/c/github/942kid/plac/master.svg)](https://codecov.io/github/942kid/plac?branch=master)\r\n\r\n<h4> A Pairwise Likelihood Augmented Estimator for the Cox Model under Left-Truncation </h4>\r\n\r\n\r\n<p>This is an R package to implement the semi-parametric estimation method for the Cox model introduced in the paper <it>A Pairwise Likelihood Augmented Estimator for the Cox Model under Left-Truncation</it> by Wu et al. (2016).</p>\r\n\r\n<h4>  Installation </h4> \r\n\r\nThis package can be installed from github with the help of `devtools`:\r\n\r\n```R\r\n# install.packages(\"devtools\")\r\ndevtools::install_github(\"942kid/plac\")\r\n```\r\n\r\n",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
