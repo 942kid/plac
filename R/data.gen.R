@@ -142,7 +142,7 @@ sim.ltrc = function(n=200, b = c(1,1),
 #' @param Y.name the name of the survival time variable in \code{dat}.
 #' @param D.name the name of the event indicator in \code{dat}.
 #' @return a list containing the test statistic and the p-value of the paired log-rant test.
-#' @references Jung, S.-H. (1999). Rank tests for matched survival data. \emph{Lifetime Data Analysis, 5(1):67–79}.
+#' @references Jung, S.H. (1999). Rank tests for matched survival data. \emph{Lifetime Data Analysis, 5(1):67-79}.
 #' @export
 plr = function(dat, A.name = "As", Y.name = "Ys", D.name = "Ds"){
   # N-A est. for A and V
@@ -151,10 +151,10 @@ plr = function(dat, A.name = "As", Y.name = "Ys", D.name = "Ds"){
   names(dat) = gsub(Y.name, "Ys", names(dat))
   names(dat) = gsub(D.name, "Ds", names(dat))
   dat$Vs = dat$Ys - dat$As
-  fit.A = survfit(Surv(As, rep(1, n)) ~ 1, data = dat)
+  fit.A = survival::survfit(Surv(As, rep(1, n)) ~ 1, data = dat)
   lambda.A = data.frame(et = fit.A$time, hazard.A = fit.A$n.event / fit.A$n.risk)
   Y.A = stepfun(fit.A$time, c(fit.A$n.risk, 0), right = TRUE)
-  fit.V = survfit(Surv(Vs,Ds) ~ 1, data = dat)
+  fit.V = survival::survfit(Surv(Vs,Ds) ~ 1, data = dat)
   lambda.V = data.frame(et = fit.V$time, hazard.V = fit.V$n.event / fit.V$n.risk)
   Y.V = stepfun(fit.V$time, c(fit.V$n.risk, 0), right = TRUE)
   # combine event times

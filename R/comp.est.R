@@ -2,9 +2,9 @@
 #'
 #' Both a conditional approach Cox model and a pairwise likelihood augmented
 #' estimator are fitted and the corresponding results are returned in a list.
-#' @param formula a formula of of the form \code{Surv(A, Y, D) ~ Z}, where
+#' @param ltrc.formula a formula of of the form \code{Surv(A, Y, D) ~ Z}, where
 #'   \code{Z} only include the time-invariate covariates.
-#' @param data a data.frame of the LTRC dataset including the responses,
+#' @param ltrc.data a data.frame of the LTRC dataset including the responses,
 #'   time-invariate covariates and the jump times for the time-depnencent
 #'   covariate.
 #' @param id.var a name of the subject id in \code{data}.
@@ -15,12 +15,14 @@
 #' @param t.jump a name of the jump time variable in \code{data}.
 #' @param init.val a list of the initial values of the coefficients and the
 #'   baseline hazard function for the PLAC estimator.
+#' @param max.iter the maximal number of iteration for the PLAC estimator
 #' @param print.result logical, if a brief summary of the regression coefficient
 #'   estiamtes should be printed out.
+#' @param ... other arguments
 #' @useDynLib plac
 #' @importFrom Rcpp sourceCpp
 #' @importFrom survival Surv tmerge coxph
-#' @details The formula should have the same format as used in \code{coxph()},
+#' @details \code{ltrc.formula} should have the same form as used in \code{coxph()}; e.g., \code{Surv(A, Y, D) ~ Z1 + Z2}.
 #'   where \code{A} is the truncation time (\code{tstart}), \code{Y} is the
 #'   survival time (\code{tstop}) and \code{D} is the status indicator
 #'   (\code{event}). \code{td.type} is used to determine which \code{C++}
@@ -57,13 +59,19 @@
 #' @examples
 #' # When only time-invariant covariates are involved
 #' dat = sim.ltrc(n = 100)$dat
-#' PLAC(ltrc.formula = Surv(As, Ys, Ds) ~ Z1 + Z2, ltrc.data = dat, td.type = "none")
+#' PLAC(ltrc.formula = Surv(As, Ys, Ds) ~ Z1 + Z2,
+#'      ltrc.data = dat, td.type = "none")
 #' # When there is a time-dependent covariate that is independent of the truncation time
-#' dat = sim.ltrc(n = 100, time.dep = TRUE, distr.A = "binomial", p.A = 0.8, Cmax = 5)$dat
-#' PLAC(ltrc.formula = Surv(As, Ys, Ds) ~ Z, ltrc.data = dat, td.type = "independent", td.var = "Zv", t.jump = "zeta")
+#' dat = sim.ltrc(n = 100, time.dep = TRUE,
+#'                distr.A = "binomial", p.A = 0.8, Cmax = 5)$dat
+#' PLAC(ltrc.formula = Surv(As, Ys, Ds) ~ Z,
+#'      ltrc.data = dat, td.type = "independent",
+#'      td.var = "Zv", t.jump = "zeta")
 #' # When there is a time-dependent covariate that depends on the truncation time
 #' dat = sim.ltrc(n = 100, time.dep = TRUE, Zv.depA = TRUE, Cmax = 5)$dat
-#' PLAC(ltrc.formula = Surv(As, Ys, Ds) ~ Z, ltrc.data = dat, td.type = "post-trunc", td.var = "Zv", t.jump = "zeta")
+#' PLAC(ltrc.formula = Surv(As, Ys, Ds) ~ Z,
+#'      ltrc.data = dat, td.type = "post-trunc",
+#'      td.var = "Zv", t.jump = "zeta")
 #'
 #' @export
 PLAC = function(ltrc.formula, ltrc.data, id.var = "ID",
@@ -140,7 +148,7 @@ PLAC = function(ltrc.formula, ltrc.data, id.var = "ID",
   }
   newdata = model.matrix(cox.LTRC)[FALSE,]
   newdata = data.frame(rbind(newdata, rep(0, ncol(newdata))))
-  summ.cox = summary(survfit(cox.LTRC, newdata = newdata))
+  summ.cox = summary(survival::survfit(cox.LTRC, newdata = newdata))
   se.H0.cox = c(0, summ.cox$std.err/summ.cox$surv)
   # set the initial values for b (coefficients) and h (baseline hazard)
   if( is.null(init.val) ){

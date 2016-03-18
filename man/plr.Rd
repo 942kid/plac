@@ -22,6 +22,6 @@ a list containing the test statistic and the p-value of the paired log-rant test
 Perform the paired log-rank test on the truncation times and the residual survival times to check the stationarity assumption (uniform truncation assumption) of the left-truncated right-censored data.
 }
 \references{
-Jung, S.-H. (1999). Rank tests for matched survival data. \emph{Lifetime Data Analysis, 5(1):67–79}.
+Jung, S.H. (1999). Rank tests for matched survival data. \emph{Lifetime Data Analysis, 5(1):67-79}.
 }
 
