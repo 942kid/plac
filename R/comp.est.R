@@ -22,6 +22,7 @@
 #' @useDynLib plac
 #' @importFrom Rcpp sourceCpp
 #' @importFrom survival Surv tmerge coxph
+#'
 #' @details \code{ltrc.formula} should have the same form as used in \code{coxph()}; e.g., \code{Surv(A, Y, D) ~ Z1 + Z2}.
 #'   where \code{A} is the truncation time (\code{tstart}), \code{Y} is the
 #'   survival time (\code{tstop}) and \code{D} is the status indicator
@@ -187,7 +188,7 @@ PLAC = function(ltrc.formula, ltrc.data, id.var = "ID",
                p.Cox = pnorm(2 * abs(b[ , 1] / se.b[ , 1]), lower.tail = FALSE),
                est.PLAC = b[ , 2], se.PLAC = se.b[ , 2],
                p.PLAC = pnorm(2 * abs(b[ , 2] / se.b[ , 2]), lower.tail = FALSE))
-  rslt = format(round(rslt, 3), nsmall = 3)
+  rslt = round(rslt, 3)
   if( print.result ){
     cat("Coefficient Estimates:\n")
     print(rslt)
@@ -206,6 +207,13 @@ PLAC = function(ltrc.formula, ltrc.data, id.var = "ID",
 #' @param est an object of the class \code{plac.fit}.
 #' @param t.eval time points at which the Lambda(t) is evaluated (for both conditional apporach and the PLAC estimator).
 #' @return a list containing the estiamtes and SEs of Lambda(t) for both conditional apporach and the PLAC estimator.
+#' @examples
+#' dat1 = sim.ltrc(n = 100)$dat
+#' est = PLAC(ltrc.formula = Surv(As, Ys, Ds) ~ Z1 + Z2,
+#'      ltrc.data = dat1, td.type = "none")
+#' H = step.L(est, t.eval = seq(0.1, 0.9, 0.1))
+#' H$L
+#' H$se.L
 #' @export
 step.L = function(est, t.eval=c(0.25, 0.75)){
 

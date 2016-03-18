@@ -63,14 +63,14 @@ available. Censoring rate can be designated through tuning the parameter
 }
 \examples{
 # With time-invariant covariates only
-dat1 = sim.ltrc(n = 100)
-head(dat1)
+sim1 = sim.ltrc(n = 100)
+head(sim1$dat)
 # With one time-dependent covariate
-dat2 = sim.ltrc(n = 100, time.dep = TRUE,
+sim2 = sim.ltrc(n = 100, time.dep = TRUE,
          distr.A = "binomial", p.A = 0.8, Cmax = 5)
-head(dat2)
+head(sim2$dat)
 # With one time-dependent covariate with dependence on the truncation time
-dat3 = sim.ltrc(n = 100, time.dep = TRUE, Zv.depA = TRUE, Cmax = 5)
-head(dat3)
+sim3 = sim.ltrc(n = 100, time.dep = TRUE, Zv.depA = TRUE, Cmax = 5)
+head(sim3$dat)
 }
 
