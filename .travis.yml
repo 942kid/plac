@@ -3,7 +3,8 @@
 language: r
 warnings_are_errors: true
 sudo: required
-
+before_install:
+  - pip install codecov
 r_packages:
   - covr
 after_success:
