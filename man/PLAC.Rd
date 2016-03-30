@@ -96,6 +96,6 @@ Wu, F. Kim, S. and Li, Y. "A Pairwise Likelihood Augmented
 Wu, F., Kim, S., Qin, J., Saran, R. and Li, Y. (2015) "A
   Pairwise-Likelihood Augmented Estimator for the Cox Model Under
   Left-Truncation." (Submitted to \emph{Journal of American Statistical
-  Association}.)
+  Association}.) \url{http://biostats.bepress.com/umichbiostat/paper118/}
 }
 

@@ -56,7 +56,7 @@
 #' @references Wu, F., Kim, S., Qin, J., Saran, R. and Li, Y. (2015) "A
 #'   Pairwise-Likelihood Augmented Estimator for the Cox Model Under
 #'   Left-Truncation." (Submitted to \emph{Journal of American Statistical
-#'   Association}.)
+#'   Association}.) \url{http://biostats.bepress.com/umichbiostat/paper118/}
 #' @examples
 #' # When only time-invariant covariates are involved
 #' dat1 = sim.ltrc(n = 50)$dat
