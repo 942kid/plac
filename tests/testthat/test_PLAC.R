@@ -26,11 +26,11 @@ test_that("PLAC() calls the right function", {
                 "Calling PLAC_TDR()...")
 })
 
-test_that("calling step.L() to get the cumulative baseline function", {
+test_that("calling cum.haz() to get the cumulative baseline function", {
   set.seed(235711)
-  dat1 = sim.ltrc(n = 100)$dat
+  dat1 = sim.ltrc(n = 100, distr.T = "lnorm")$dat
   est = PLAC(ltrc.formula = Surv(As, Ys, Ds) ~ Z1 + Z2,
        ltrc.data = dat1, td.type = "none")
-  H = step.L(est, t.eval = seq(0.2, 1, 0.2))
+  H = cum.haz(est, t.eval = seq(0.2, 1, 0.2))
   expect_output(str(H), "List of 5")
 })

@@ -211,11 +211,11 @@ PLAC = function(ltrc.formula, ltrc.data, id.var = "ID",
 #' dat1 = sim.ltrc(n = 100)$dat
 #' est = PLAC(ltrc.formula = Surv(As, Ys, Ds) ~ Z1 + Z2,
 #'      ltrc.data = dat1, td.type = "none")
-#' H = step.L(est, t.eval = seq(0.1, 0.9, 0.1))
+#' H = cum.haz(est, t.eval = seq(0.1, 0.9, 0.1))
 #' H$L
 #' H$se.L
 #' @export
-step.L = function(est, t.eval=c(0.25, 0.75)){
+cum.haz = function(est, t.eval=c(0.25, 0.75)){
 
   # evaluation of Lambda_hat
   tim = est$Event.Time
