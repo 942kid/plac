@@ -30,6 +30,7 @@
 #' @param Cmax the upper bound of the uniform distribution of the censoring time
 #'   (C).
 #' @param fix.seed an optional random seed for simulation.
+#' @importFrom stats rweibull runif rbinom rexp plnorm qlnorm quantile
 #' @return a list with a data.frame containing the observed survival times
 #'   (\code{Ys}), the observed truncation times (\code{As}), the event indicator
 #'   (\code{Ds}) and the covariates (\code{Zs}); a vector of certain quantiles

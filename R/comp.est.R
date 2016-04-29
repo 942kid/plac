@@ -20,6 +20,8 @@
 #'   estiamtes should be printed out.
 #' @param ... other arguments
 #' @useDynLib plac
+#' @importFrom stats as.formula coef model.frame model.matrix model.response
+#'   model.matrix pnorm
 #' @importFrom Rcpp sourceCpp
 #' @importFrom survival Surv tmerge coxph
 #'
@@ -206,6 +208,7 @@ PLAC = function(ltrc.formula, ltrc.data, id.var = "ID",
 #'
 #' @param est an object of the class \code{plac.fit}.
 #' @param t.eval time points at which the Lambda(t) is evaluated (for both conditional apporach and the PLAC estimator).
+#' @importFrom stats stepfun
 #' @return a list containing the estiamtes and SEs of Lambda(t) for both conditional apporach and the PLAC estimator.
 #' @examples
 #' dat1 = sim.ltrc(n = 100)$dat
