@@ -1,7 +1,10 @@
-## R package 'plac' version 0.1.0
+## R package 'plac' version 0.1.1
 
 [![Travis-CI Build Status](https://travis-ci.org/942kid/plac.svg?branch=master)](https://travis-ci.org/942kid/plac)
 [![Coverage Status](https://img.shields.io/codecov/c/github/942kid/plac/master.svg)](https://codecov.io/github/942kid/plac?branch=master)
+[![CRAN version](http://www.r-pkg.org/badges/version/plac)](https://cran.r-project.org/package=plac)
+![](http://cranlogs.r-pkg.org/badges/grand-total/plac)
+
 
 ### A Pairwise Likelihood Augmented Estimator for the Cox Model under Left-Truncation 
 
