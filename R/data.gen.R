@@ -8,12 +8,16 @@
 #'
 #' @param n the sample size.
 #' @param b a numeric vector for true regression coefficients.
+#' @param Z.type a vector indicating the type of the time-invariant covariates;
+#'  \code{"C"} = uniform[-1, 1], \code{"B"} = binary(0.5).
 #' @param time.dep logical, whether there is the time-dependent covariate (only
 #'   one indicator function Zv = I(t >= zeta) is supported); the default is
 #'   FALSE.
 #' @param Zv.depA logical, whether the time-dependent covariate \code{Zv}
 #'   depends on A^* (the only form supported is Zv = I(t >= zeta + A^*)); the
 #'   default is FALSE.
+#' @param A.depZ logical, whether the truncation times depends on the
+#'   covariate Z.
 #' @param distr.T the baseline survival time (T*) distribution ("exp" or
 #'   "weibull").
 #' @param shape.T the shape parameter for the Weibull distribution of T*.
@@ -27,15 +31,17 @@
 #' @param shape.A the shape parameter for the Weibull distribution of A*.
 #' @param scale.A the scale parameter for the Weibull distribution of A*.
 #' @param p.A the success probability for the binomial distribution of A*.
+#' @param b.A the vector of coefficients for the model of A on the covariates.
 #' @param Cmax the upper bound of the uniform distribution of the censoring time
 #'   (C).
 #' @param fix.seed an optional random seed for simulation.
 #' @importFrom stats rweibull runif rbinom rexp plnorm qlnorm quantile
-#' @return a list with a data.frame containing the observed survival times
-#'   (\code{Ys}), the observed truncation times (\code{As}), the event indicator
-#'   (\code{Ds}) and the covariates (\code{Zs}); a vector of certain quantiles
-#'   of Ys (\code{taus}); the censoring proportion (\code{PC}) and the
-#'   truncation proportiona (\code{PT}).
+#' @return a list with a data.frame containing the biased sample of
+#' survival times (\code{Ys}) and truncation times (\code{As}),
+#' the event indicator (\code{Ds}) and the covariates (\code{Zs});
+#' a vector of certain quantiles of Ys (\code{taus});
+#' the censoring proportion (\code{PC}) and the truncation proportion
+#' (\code{PT}).
 #' @examples
 #' # With time-invariant covariates only
 #' sim1 = sim.ltrc(n = 100)
@@ -48,94 +54,109 @@
 #' sim3 = sim.ltrc(n = 100, time.dep = TRUE, Zv.depA = TRUE, Cmax = 5)
 #' head(sim3$dat)
 #' @export
-sim.ltrc = function(n=200, b = c(1,1),
-                    time.dep = FALSE, Zv.depA = FALSE,
+sim.ltrc = function(n=200, b = c(1, 1), Z.type = c("C", "B"),
+                    time.dep = FALSE, Zv.depA = FALSE, A.depZ = FALSE,
                     distr.T = "weibull",
-                    shape.T = 2, scale.T = 1,
-                    meanlog.T = 0, sdlog.T = 1,
+                    shape.T = 2, scale.T = 1, meanlog.T = 0, sdlog.T = 1,
                     distr.A = "weibull",
                     shape.A = 1, scale.A = 5, p.A = 0.3,
+                    b.A = c(0, 0),
                     Cmax = Inf, fix.seed = NULL){
-	PT = NULL
-	PC = NULL
-	# get the dimention of the covariates (should be << n)
-	p = length(b)
-	if( !is.null(fix.seed) ) set.seed(fix.seed)
-	j = 1
-	k = 0
-	Ts = NULL
-	As = NULL
-	Zs = NULL
-	while( j <= n ){
-		k = k + 1
-		As.j = switch(distr.A,
-		              "weibull" = rweibull(1, shape.A, scale.A),
-  		            "unif" = runif(1,0,100),
-  		            "binomial" = rbinom(1,5,p.A),
+  PT = NULL
+  PC = NULL
+  # get the dimention of the covariates (should be << n)
+  p = length(b)
+  if (is.null(fix.seed)) set.seed(fix.seed)
+  j = 1
+  k = 0
+  Ts = NULL
+  As = NULL
+  Zs = NULL
+  T0s = NULL
+  A0s = NULL
+  Z0s = NULL
+  while (j <= n) {
+    k = k + 1
+    As.j = switch(distr.A,
+                  "weibull" = rweibull(1, shape.A, scale.A),
+                  "unif" = runif(1,0,100),
+                  "binomial" = rbinom(1,5,p.A),
                   "dunif" = sample(0:5, 1), rweibull(1, shape.A, scale.A))
-		if( time.dep ){
-		  # Time at which the time-dependent covariate changes from 0 to 1.
-		  zeta.j = rexp(1) + ifelse(Zv.depA, As.j, 0)
-		  # Continuous time-invariant covariates
-		  Zf.j = runif(p-1, -1, 1)
-		  # Relative risks: before = RR0.j; after = RR1.j
-		  RR0.j = exp(sum(b[-p] * Zf.j))
-		  RR1.j = exp(sum(b[-p] * Zf.j) + b[p])
-		  eps.j = rexp(1)
-		  # Generate Random Samples from the Cox's model.
-		  if( distr.T == "lnorm" ){
-		    t0 = -plnorm(zeta.j, meanlog.T, sdlog.T,
-		                 lower.tail = FALSE, log.p = TRUE)
-		    Ts.j = qlnorm(-(min(eps.j, t0 * RR0.j) / RR0.j +
-		                    max(eps.j - t0 * RR0.j, 0) / RR1.j),
-		                  meanlog.T, sdlog.T,
-		                  lower.tail = FALSE, log.p = TRUE)
-		  }else if( distr.T == "weibull" ){
-		    t0 = (zeta.j / scale.T) ^ shape.T
-		    Ts.j = (min(eps.j, t0 * RR0.j) / RR0.j  +
-		            max(eps.j - t0 * RR0.j, 0) / RR1.j)^(1 / shape.T) * scale.T
-		  }
-		}else{
-		  Zf.j = runif(p, -1, 1)
-		  zeta.j = NULL
-		  eps.j = rexp(1)
-		  if( distr.T == "lnorm" ){
-		    Ts.j = qlnorm(-eps.j * exp(-sum(b * Zf.j)),
-		                  meanlog.T, sdlog.T,
-		                  lower.tail = FALSE, log.p = TRUE)
-		  }else if( distr.T == "weibull" ){
-		    Ts.j = (eps.j * exp(sum(-b * Zf.j)))^(1 / shape.T) * scale.T
-		  }
-		}
-		# Keep only untruncated (A,T)'s
-		if( As.j < Ts.j ){
-			Ts[j] = Ts.j
-			As[j] = As.j
+    if (time.dep) {
+      # Time at which the time-dependent covariate changes from 0 to 1.
+      zeta.j = rexp(1) + ifelse(Zv.depA, As.j, 0)
+      # Continuous time-invariant covariates
+      Zf.j = runif(p-1, -1, 1)
+      # Relative risks: before = RR0.j; after = RR1.j
+      RR0.j = exp(sum(b[-p] * Zf.j))
+      RR1.j = exp(sum(b[-p] * Zf.j) + b[p])
+      eps.j = rexp(1)
+      # Generate Random Samples from the Cox's model.
+      if (distr.T == "lnorm") {
+        t0 = -plnorm(zeta.j, meanlog.T, sdlog.T,
+                     lower.tail = FALSE, log.p = TRUE)
+        Ts.j = qlnorm(-(min(eps.j, t0 * RR0.j) / RR0.j +
+                        max(eps.j - t0 * RR0.j, 0) / RR1.j),
+                      meanlog.T, sdlog.T,
+                      lower.tail = FALSE, log.p = TRUE)
+      } else if (distr.T == "weibull") {
+        t0 = (zeta.j / scale.T) ^ shape.T
+        Ts.j = (min(eps.j, t0 * RR0.j) / RR0.j  +
+                max(eps.j - t0 * RR0.j, 0) / RR1.j) ^ (1 / shape.T) * scale.T
+      }
+    } else {
+      Zf.j = unname(sapply(Z.type, function(x)ifelse(x == "C",
+                                              runif(1, -1, 1),
+                                              rbinom(1, 1, 0.5))))
+
+      zeta.j = NULL
+      if (A.depZ) {
+        As.j = rexp(1, rate = exp(sum(b.A * Zf.j)))
+      }
+      eps.j = rexp(1)
+      if (distr.T == "lnorm") {
+        Ts.j = qlnorm(-eps.j * exp(-sum(b * Zf.j)),
+                      meanlog.T, sdlog.T,
+                      lower.tail = FALSE, log.p = TRUE)
+      } else if (distr.T == "weibull") {
+        Ts.j = (eps.j * exp(sum(-b * Zf.j)))^(1 / shape.T) * scale.T
+      }
+    }
+    # Keep only untruncated (A,T)'s
+    T0s = c(T0s, Ts.j)
+    A0s = c(A0s, As.j)
+    Z0s = rbind(Z0s, c(Z = Zf.j, zeta = zeta.j))
+    if (As.j < Ts.j) {
+      Ts[j] = Ts.j
+      As[j] = As.j
       Zs = rbind(Zs, c(Z = Zf.j, zeta = zeta.j))
-			j = j + 1
-		}else{
-			next
-		}
-	}
-	if( Cmax != Inf ){
-		Cs = runif(n, 0, Cmax)
-	}else{
+      j = j + 1
+    } else {
+      next
+    }
+  }
+  if (Cmax != Inf) {
+    Cs = runif(n, 0, Cmax)
+  } else {
     # ghost runs to keep the same random seed (=0/>0 censoring)
     Cs = runif(n)
-		Cs = rep(Inf,n)
-	}
-	Cs = As + Cs
-	Ds = as.numeric(Ts <= Cs)
-	Ys = pmin(Ts,Cs)
-	tau = quantile(Ys,seq(0.1,0.9,0.1))
-	dat = data.frame(Zs,As,Ys,Ds)
+    Cs = rep(Inf,n)
+  }
+  Cs = As + Cs
+  Ds = as.numeric(Ts <= Cs)
+  Ys = pmin(Ts,Cs)
+  tau = quantile(Ys,seq(0.1,0.9,0.1))
+  dat = data.frame(Zs,As,Ys,Ds)
+  dat0 = data.frame(Z0s, A0s, T0s)
   # Sort the dataset by observed times; PLAC functions assume this.
-	dat = dat[order(dat$Ys), ]
+  dat = dat[order(dat$Ys), ]
+  dat0 = dat0[order(dat0$T0s), ]
   dat = cbind(ID = 1:n, dat)
-	rownames(dat) = NULL
-	PC = 1 - mean(dat$Ds)
-	PT = 1 - n / k
-	return(list(dat = dat, PC = PC, PT = PT, tau = tau))
+  rownames(dat) = NULL
+  rownames(dat) = NULL
+  PC = 1 - mean(dat$Ds)
+  PT = 1 - n / k
+  return(list(dat = dat, dat0 = dat0, PC = PC, PT = PT, tau = tau))
 }
 
 #' Perform the paired log-rank test.

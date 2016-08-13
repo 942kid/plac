@@ -4,8 +4,8 @@
 \alias{PLAC}
 \title{Calculate the PLAC estimator when a time-dependent indicator presents}
 \usage{
-PLAC(ltrc.formula, ltrc.data, id.var = "ID", td.var = NULL,
-  td.type = "none", t.jump = NULL, init.val = NULL, max.iter = 100,
+PLAC(ltrc.formula, ltrc.data, id.var = "ID", td.type = "none",
+  td.var = NULL, t.jump = NULL, init.val = NULL, max.iter = 100,
   print.result = TRUE, ...)
 }
 \arguments{
@@ -16,15 +16,15 @@ PLAC(ltrc.formula, ltrc.data, id.var = "ID", td.var = NULL,
 time-invariate covariates and the jump times for the time-depnencent
 covariate.}
 
-\item{id.var}{a name of the subject id in \code{data}.}
-
-\item{td.var}{a name of the time-dependent covariate in the output.}
+\item{id.var}{the name of the subject id in \code{data}.}
 
 \item{td.type}{the type of the time-dependent covariate. Either one of
 \code{c("none", "independent", "post-trunc", "pre-post-trunc")}. See
 Details.}
 
-\item{t.jump}{a name of the jump time variable in \code{data}.}
+\item{td.var}{the name of the time-dependent covariate in the output.}
+
+\item{t.jump}{the name of the jump time variable in \code{data}.}
 
 \item{init.val}{a list of the initial values of the coefficients and the
 baseline hazard function for the PLAC estimator.}
@@ -59,16 +59,16 @@ Both a conditional approach Cox model and a pairwise likelihood augmented
 estimator are fitted and the corresponding results are returned in a list.
 }
 \details{
-\code{ltrc.formula} should have the same form as used in \code{coxph()}; e.g., \code{Surv(A, Y, D) ~ Z1 + Z2}.
-  where \code{A} is the truncation time (\code{tstart}), \code{Y} is the
-  survival time (\code{tstop}) and \code{D} is the status indicator
-  (\code{event}). \code{td.type} is used to determine which \code{C++}
-  function will be invoked: either \code{PLAC_TI} (if \code{td.type =
-  "none"}), \code{PLAC_TD} (if \code{td.type = "independent"}) or
-  \code{PLAC_TDR}) (if \code{td.type \%in\% c("post-trunc",
-  "pre-post-trunc")}). For \code{td.type = "post-trunc"}, the pre-truncation
-  values for the time-dependent covariate will be set to be zero for all
-  subjects.
+\code{ltrc.formula} should have the same form as used in
+  \code{coxph()}; e.g., \code{Surv(A, Y, D) ~ Z1 + Z2}. where \code{(A, Y,
+  D)} are the truncation time, the survival time  and the status indicator
+  (\code{(tstart, tstop, event)} as in \code{\link[survival]{coxph}}).
+  \code{td.type} is used to determine which \code{C++} function will be
+  invoked: either \code{PLAC_TI} (if \code{td.type = "none"}), \code{PLAC_TD}
+  (if \code{td.type = "independent"}) or \code{PLAC_TDR}) (if \code{td.type
+  \%in\% c("post-trunc", "pre-post-trunc")}). For \code{td.type =
+  "post-trunc"}, the pre-truncation values for the time-dependent covariate
+  will be set to be zero for all subjects.
 }
 \examples{
 # When only time-invariant covariates are involved
