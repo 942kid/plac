@@ -66,7 +66,7 @@ sim.ltrc = function(n=200, b = c(1, 1), Z.type = c("C", "B"),
   PC = NULL
   # get the dimention of the covariates (should be << n)
   p = length(b)
-  if (is.null(fix.seed)) set.seed(fix.seed)
+  if (!is.null(fix.seed)) set.seed(fix.seed)
   j = 1
   k = 0
   Ts = NULL

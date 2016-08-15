@@ -1,25 +1,24 @@
 context("PLAC fit")
 
 test_that("PLAC() calls the right function", {
-  set.seed(235711)
-  dat = sim.ltrc(n = 50, Cmax = 5)$dat
+  dat = sim.ltrc(n = 50, Cmax = 5, fix.seed = 2357)$dat
   p.lbs = plr(dat)$P
-  expect_equal(object = p.lbs, expected = 0.8551607, tolerance = .0005)
+  expect_equal(object = p.lbs, expected = 0.6140091, tolerance = .0005)
   expect_output(PLAC(ltrc.formula = Surv(As, Ys, Ds) ~ Z1 + Z2,
                       ltrc.data = dat, td.type = "none"),
                 "Calling PLAC_TI()...")
 
   dat = sim.ltrc(n = 50, time.dep = TRUE,
-                distr.A = "binomial", p.A = 0.8, Cmax = 5)$dat
+                distr.A = "binomial", p.A = 0.8, Cmax = 5, fix.seed = 2357)$dat
   p.lbs = plr(dat)$P
   expect_equal(object = p.lbs, expected = 0, tolerance = .0005)
   expect_output(PLAC(ltrc.formula = Surv(As, Ys, Ds) ~ Z,
                      ltrc.data = dat, td.type = "independent",
                      td.var = "Zv", t.jump = "zeta"),
                 "Calling PLAC_TD()...")
-  dat = sim.ltrc(n = 50, time.dep = TRUE, Zv.depA = TRUE, Cmax = 5)$dat
+  dat = sim.ltrc(n = 50, time.dep = TRUE, Zv.depA = TRUE, Cmax = 5, fix.seed = 2357)$dat
   p.lbs = plr(dat)$P
-  expect_equal(object = p.lbs, expected = 0.1222954, tolerance = .0005)
+  expect_equal(object = p.lbs, expected = 0.7892119, tolerance = .0005)
   expect_output(PLAC(ltrc.formula = Surv(As, Ys, Ds) ~ Z,
                      ltrc.data = dat, td.type = "post-trunc",
                      td.var = "Zv", t.jump = "zeta"),
