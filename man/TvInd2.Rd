@@ -15,9 +15,8 @@ TvInd2(eta, zeta, W)
 }
 \value{
 the time-depependent covariate indicators of the form Z_v(t) =
-  eta * I(w_k <= zeta).
+eta * I(w_k <= zeta).
 }
 \description{
 Generate time-depependent covariate indicators
 }
-

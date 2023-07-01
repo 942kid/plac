@@ -37,4 +37,3 @@ the PLAC estimator.
 C++ Function for Solving the PLAC Estimator.
 (with time-dependent convariates independent of A^*)
 }
-

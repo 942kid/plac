@@ -13,9 +13,10 @@ PwInd(X, W)
 }
 \value{
 the truncation-pair indicators of the form I(w_k <= A_i)
-- I(w_k <= XA_j).
+\itemize{
+\item I(w_k <= XA_j).
+}
 }
 \description{
 Generate truncation-pair indicators
 }
-

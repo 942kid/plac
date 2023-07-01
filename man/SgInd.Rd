@@ -17,4 +17,3 @@ risk-set indicators Y_i(w_k) of the form I(A_i <= w_k <= X_i).
 \description{
 Generate risk-set indicators
 }
-

@@ -17,4 +17,3 @@ the time-depependent covariate of the form Z_v(t) = I(w_k > zeta).
 \description{
 Generate time-depependent covariate indicators
 }
-

@@ -28,4 +28,3 @@ plr(dat)
 \references{
 Jung, S.H. (1999). Rank tests for matched survival data. \emph{Lifetime Data Analysis, 5(1):67-79}.
 }
-

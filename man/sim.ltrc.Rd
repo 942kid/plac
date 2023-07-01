@@ -4,11 +4,26 @@
 \alias{sim.ltrc}
 \title{Generate left-truncated (and right-cencored) data from the Cox model.}
 \usage{
-sim.ltrc(n = 200, b = c(1, 1), Z.type = c("C", "B"), time.dep = FALSE,
-  Zv.depA = FALSE, A.depZ = FALSE, distr.T = "weibull", shape.T = 2,
-  scale.T = 1, meanlog.T = 0, sdlog.T = 1, distr.A = "weibull",
-  shape.A = 1, scale.A = 5, p.A = 0.3, b.A = c(0, 0), Cmax = Inf,
-  fix.seed = NULL)
+sim.ltrc(
+  n = 200,
+  b = c(1, 1),
+  Z.type = c("C", "B"),
+  time.dep = FALSE,
+  Zv.depA = FALSE,
+  A.depZ = FALSE,
+  distr.T = "weibull",
+  shape.T = 2,
+  scale.T = 1,
+  meanlog.T = 0,
+  sdlog.T = 1,
+  distr.A = "weibull",
+  shape.A = 1,
+  scale.A = 5,
+  p.A = 0.3,
+  b.A = c(0, 0),
+  Cmax = Inf,
+  fix.seed = NULL
+)
 }
 \arguments{
 \item{n}{the sample size.}
@@ -83,4 +98,3 @@ head(sim2$dat)
 sim3 = sim.ltrc(n = 100, time.dep = TRUE, Zv.depA = TRUE, Cmax = 5)
 head(sim3$dat)
 }
-

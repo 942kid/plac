@@ -25,4 +25,3 @@ H = cum.haz(est, t.eval = seq(0.1, 0.9, 0.1))
 H$L
 H$se.L
 }
-
