@@ -6,65 +6,14 @@
 
 using namespace Rcpp;
 
-// SgInd
-Eigen::MatrixXd SgInd(Eigen::Map<Eigen::MatrixXd> X, Eigen::Map<Eigen::ArrayXd> W);
-RcppExport SEXP plac_SgInd(SEXP XSEXP, SEXP WSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Eigen::Map<Eigen::MatrixXd> >::type X(XSEXP);
-    Rcpp::traits::input_parameter< Eigen::Map<Eigen::ArrayXd> >::type W(WSEXP);
-    rcpp_result_gen = Rcpp::wrap(SgInd(X, W));
-    return rcpp_result_gen;
-END_RCPP
-}
-// PwInd
-Eigen::MatrixXd PwInd(Eigen::Map<Eigen::MatrixXd> X, Eigen::Map<Eigen::ArrayXd> W);
-RcppExport SEXP plac_PwInd(SEXP XSEXP, SEXP WSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Eigen::Map<Eigen::MatrixXd> >::type X(XSEXP);
-    Rcpp::traits::input_parameter< Eigen::Map<Eigen::ArrayXd> >::type W(WSEXP);
-    rcpp_result_gen = Rcpp::wrap(PwInd(X, W));
-    return rcpp_result_gen;
-END_RCPP
-}
-// TvInd
-Eigen::MatrixXd TvInd(Eigen::Map<Eigen::VectorXd> zeta, Eigen::Map<Eigen::ArrayXd> W);
-RcppExport SEXP plac_TvInd(SEXP zetaSEXP, SEXP WSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Eigen::Map<Eigen::VectorXd> >::type zeta(zetaSEXP);
-    Rcpp::traits::input_parameter< Eigen::Map<Eigen::ArrayXd> >::type W(WSEXP);
-    rcpp_result_gen = Rcpp::wrap(TvInd(zeta, W));
-    return rcpp_result_gen;
-END_RCPP
-}
-// PLAC_TD
-List PLAC_TD(Eigen::Map<Eigen::MatrixXd> Z, Eigen::Map<Eigen::MatrixXd> ZFV_, Eigen::Map<Eigen::MatrixXd> X, Eigen::Map<Eigen::ArrayXd> W, Eigen::Map<Eigen::MatrixXd> Ind1, Eigen::Map<Eigen::MatrixXd> Ind2, Eigen::Map<Eigen::ArrayXd> Dn, Eigen::VectorXd b, Eigen::VectorXd h, int K);
-RcppExport SEXP plac_PLAC_TD(SEXP ZSEXP, SEXP ZFV_SEXP, SEXP XSEXP, SEXP WSEXP, SEXP Ind1SEXP, SEXP Ind2SEXP, SEXP DnSEXP, SEXP bSEXP, SEXP hSEXP, SEXP KSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Eigen::Map<Eigen::MatrixXd> >::type Z(ZSEXP);
-    Rcpp::traits::input_parameter< Eigen::Map<Eigen::MatrixXd> >::type ZFV_(ZFV_SEXP);
-    Rcpp::traits::input_parameter< Eigen::Map<Eigen::MatrixXd> >::type X(XSEXP);
-    Rcpp::traits::input_parameter< Eigen::Map<Eigen::ArrayXd> >::type W(WSEXP);
-    Rcpp::traits::input_parameter< Eigen::Map<Eigen::MatrixXd> >::type Ind1(Ind1SEXP);
-    Rcpp::traits::input_parameter< Eigen::Map<Eigen::MatrixXd> >::type Ind2(Ind2SEXP);
-    Rcpp::traits::input_parameter< Eigen::Map<Eigen::ArrayXd> >::type Dn(DnSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd >::type b(bSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd >::type h(hSEXP);
-    Rcpp::traits::input_parameter< int >::type K(KSEXP);
-    rcpp_result_gen = Rcpp::wrap(PLAC_TD(Z, ZFV_, X, W, Ind1, Ind2, Dn, b, h, K));
-    return rcpp_result_gen;
-END_RCPP
-}
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // TvInd2
 Eigen::MatrixXd TvInd2(Eigen::Map<Eigen::VectorXd> eta, Eigen::Map<Eigen::VectorXd> zeta, Eigen::Map<Eigen::ArrayXd> W);
-RcppExport SEXP plac_TvInd2(SEXP etaSEXP, SEXP zetaSEXP, SEXP WSEXP) {
+RcppExport SEXP _plac_TvInd2(SEXP etaSEXP, SEXP zetaSEXP, SEXP WSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -77,7 +26,7 @@ END_RCPP
 }
 // PLAC_TDR
 List PLAC_TDR(Eigen::Map<Eigen::MatrixXd> ZF, Eigen::Map<Eigen::MatrixXd> ZFV_, Eigen::Map<Eigen::MatrixXd> Z, Eigen::Map<Eigen::MatrixXd> X, Eigen::Map<Eigen::ArrayXd> W, Eigen::Map<Eigen::MatrixXd> Ind1, Eigen::Map<Eigen::MatrixXd> Ind2, Eigen::Map<Eigen::ArrayXd> Dn, Eigen::VectorXd b, Eigen::VectorXd h, int K);
-RcppExport SEXP plac_PLAC_TDR(SEXP ZFSEXP, SEXP ZFV_SEXP, SEXP ZSEXP, SEXP XSEXP, SEXP WSEXP, SEXP Ind1SEXP, SEXP Ind2SEXP, SEXP DnSEXP, SEXP bSEXP, SEXP hSEXP, SEXP KSEXP) {
+RcppExport SEXP _plac_PLAC_TDR(SEXP ZFSEXP, SEXP ZFV_SEXP, SEXP ZSEXP, SEXP XSEXP, SEXP WSEXP, SEXP Ind1SEXP, SEXP Ind2SEXP, SEXP DnSEXP, SEXP bSEXP, SEXP hSEXP, SEXP KSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -96,9 +45,65 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// SgInd
+Eigen::MatrixXd SgInd(Eigen::Map<Eigen::MatrixXd> X, Eigen::Map<Eigen::ArrayXd> W);
+RcppExport SEXP _plac_SgInd(SEXP XSEXP, SEXP WSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Eigen::Map<Eigen::MatrixXd> >::type X(XSEXP);
+    Rcpp::traits::input_parameter< Eigen::Map<Eigen::ArrayXd> >::type W(WSEXP);
+    rcpp_result_gen = Rcpp::wrap(SgInd(X, W));
+    return rcpp_result_gen;
+END_RCPP
+}
+// PwInd
+Eigen::MatrixXd PwInd(Eigen::Map<Eigen::MatrixXd> X, Eigen::Map<Eigen::ArrayXd> W);
+RcppExport SEXP _plac_PwInd(SEXP XSEXP, SEXP WSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Eigen::Map<Eigen::MatrixXd> >::type X(XSEXP);
+    Rcpp::traits::input_parameter< Eigen::Map<Eigen::ArrayXd> >::type W(WSEXP);
+    rcpp_result_gen = Rcpp::wrap(PwInd(X, W));
+    return rcpp_result_gen;
+END_RCPP
+}
+// TvInd
+Eigen::MatrixXd TvInd(Eigen::Map<Eigen::VectorXd> zeta, Eigen::Map<Eigen::ArrayXd> W);
+RcppExport SEXP _plac_TvInd(SEXP zetaSEXP, SEXP WSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Eigen::Map<Eigen::VectorXd> >::type zeta(zetaSEXP);
+    Rcpp::traits::input_parameter< Eigen::Map<Eigen::ArrayXd> >::type W(WSEXP);
+    rcpp_result_gen = Rcpp::wrap(TvInd(zeta, W));
+    return rcpp_result_gen;
+END_RCPP
+}
+// PLAC_TD
+List PLAC_TD(Eigen::Map<Eigen::MatrixXd> Z, Eigen::Map<Eigen::MatrixXd> ZFV_, Eigen::Map<Eigen::MatrixXd> X, Eigen::Map<Eigen::ArrayXd> W, Eigen::Map<Eigen::MatrixXd> Ind1, Eigen::Map<Eigen::MatrixXd> Ind2, Eigen::Map<Eigen::ArrayXd> Dn, Eigen::VectorXd b, Eigen::VectorXd h, int K);
+RcppExport SEXP _plac_PLAC_TD(SEXP ZSEXP, SEXP ZFV_SEXP, SEXP XSEXP, SEXP WSEXP, SEXP Ind1SEXP, SEXP Ind2SEXP, SEXP DnSEXP, SEXP bSEXP, SEXP hSEXP, SEXP KSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Eigen::Map<Eigen::MatrixXd> >::type Z(ZSEXP);
+    Rcpp::traits::input_parameter< Eigen::Map<Eigen::MatrixXd> >::type ZFV_(ZFV_SEXP);
+    Rcpp::traits::input_parameter< Eigen::Map<Eigen::MatrixXd> >::type X(XSEXP);
+    Rcpp::traits::input_parameter< Eigen::Map<Eigen::ArrayXd> >::type W(WSEXP);
+    Rcpp::traits::input_parameter< Eigen::Map<Eigen::MatrixXd> >::type Ind1(Ind1SEXP);
+    Rcpp::traits::input_parameter< Eigen::Map<Eigen::MatrixXd> >::type Ind2(Ind2SEXP);
+    Rcpp::traits::input_parameter< Eigen::Map<Eigen::ArrayXd> >::type Dn(DnSEXP);
+    Rcpp::traits::input_parameter< Eigen::VectorXd >::type b(bSEXP);
+    Rcpp::traits::input_parameter< Eigen::VectorXd >::type h(hSEXP);
+    Rcpp::traits::input_parameter< int >::type K(KSEXP);
+    rcpp_result_gen = Rcpp::wrap(PLAC_TD(Z, ZFV_, X, W, Ind1, Ind2, Dn, b, h, K));
+    return rcpp_result_gen;
+END_RCPP
+}
 // PLAC_TI
 List PLAC_TI(Eigen::Map<Eigen::MatrixXd> Z, Eigen::Map<Eigen::MatrixXd> X, Eigen::Map<Eigen::ArrayXd> W, Eigen::Map<Eigen::MatrixXd> Ind1, Eigen::Map<Eigen::MatrixXd> Ind2, Eigen::Map<Eigen::ArrayXd> Dn, Eigen::VectorXd b, Eigen::VectorXd h, int K);
-RcppExport SEXP plac_PLAC_TI(SEXP ZSEXP, SEXP XSEXP, SEXP WSEXP, SEXP Ind1SEXP, SEXP Ind2SEXP, SEXP DnSEXP, SEXP bSEXP, SEXP hSEXP, SEXP KSEXP) {
+RcppExport SEXP _plac_PLAC_TI(SEXP ZSEXP, SEXP XSEXP, SEXP WSEXP, SEXP Ind1SEXP, SEXP Ind2SEXP, SEXP DnSEXP, SEXP bSEXP, SEXP hSEXP, SEXP KSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -114,4 +119,20 @@ BEGIN_RCPP
     rcpp_result_gen = Rcpp::wrap(PLAC_TI(Z, X, W, Ind1, Ind2, Dn, b, h, K));
     return rcpp_result_gen;
 END_RCPP
+}
+
+static const R_CallMethodDef CallEntries[] = {
+    {"_plac_TvInd2", (DL_FUNC) &_plac_TvInd2, 3},
+    {"_plac_PLAC_TDR", (DL_FUNC) &_plac_PLAC_TDR, 11},
+    {"_plac_SgInd", (DL_FUNC) &_plac_SgInd, 2},
+    {"_plac_PwInd", (DL_FUNC) &_plac_PwInd, 2},
+    {"_plac_TvInd", (DL_FUNC) &_plac_TvInd, 2},
+    {"_plac_PLAC_TD", (DL_FUNC) &_plac_PLAC_TD, 10},
+    {"_plac_PLAC_TI", (DL_FUNC) &_plac_PLAC_TI, 9},
+    {NULL, NULL, 0}
+};
+
+RcppExport void R_init_plac(DllInfo *dll) {
+    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
+    R_useDynamicSymbols(dll, FALSE);
 }

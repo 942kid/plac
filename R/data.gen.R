@@ -9,7 +9,7 @@
 #' @param n the sample size.
 #' @param b a numeric vector for true regression coefficients.
 #' @param Z.type a vector indicating the type of the time-invariant covariates;
-#'  \code{"C"} = uniform[-1, 1], \code{"B"} = binary(0.5).
+#'  \code{"C"} = uniform\[-1, 1\], \code{"B"} = binary(0.5).
 #' @param time.dep logical, whether there is the time-dependent covariate (only
 #'   one indicator function Zv = I(t >= zeta) is supported); the default is
 #'   FALSE.

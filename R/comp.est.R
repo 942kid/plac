@@ -19,7 +19,7 @@
 #' @param print.result logical, if a brief summary of the regression coefficient
 #'   estiamtes should be printed out.
 #' @param ... other arguments
-#' @useDynLib plac
+#' @useDynLib plac, .registration = TRUE
 #' @importFrom stats as.formula coef model.frame model.matrix model.response
 #'   model.matrix pnorm
 #' @importFrom Rcpp sourceCpp
@@ -52,13 +52,7 @@
 #'   estimator}
 #'   \item{\code{summ}}{A brief summary of the covariates effects}
 #'   }
-#' @references Wu, F. Kim, S. and Li, Y. "A Pairwise Likelihood Augmented
-#'   Estimator for Left-Truncated Data with Time-Dependent Covariates."
-#'   (\emph{in preparation})
-#' @references Wu, F., Kim, S., Qin, J., Saran, R. and Li, Y. (2015) "A
-#'   Pairwise-Likelihood Augmented Estimator for the Cox Model Under
-#'   Left-Truncation." (Submitted to \emph{Journal of American Statistical
-#'   Association}.) \url{http://biostats.bepress.com/umichbiostat/paper118/}
+#' @references Wu, F., Kim, S., Qin, J., Saran, R., & Li, Y. (2018). A pairwise likelihood augmented Cox estimator for left‐truncated data. Biometrics, 74(1), 100-108.
 #' @examples
 #' # When only time-invariant covariates are involved
 #' dat1 = sim.ltrc(n = 50)$dat
