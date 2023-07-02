@@ -18,7 +18,7 @@ a list containing the estiamtes and SEs of Lambda(t) for both conditional appora
 Calulate the Values of the cumulative Hazard at Fixed Times
 }
 \examples{
-dat1 = sim.ltrc(n = 100)$dat
+dat1 = sim.ltrc(n = 50)$dat
 est = PLAC(ltrc.formula = Surv(As, Ys, Ds) ~ Z1 + Z2,
      ltrc.data = dat1, td.type = "none")
 H = cum.haz(est, t.eval = seq(0.1, 0.9, 0.1))

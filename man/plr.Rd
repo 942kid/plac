@@ -22,7 +22,7 @@ a list containing the test statistic and the p-value of the paired log-rant test
 Perform the paired log-rank test on the truncation times and the residual survival times to check the stationarity assumption (uniform truncation assumption) of the left-truncated right-censored data.
 }
 \examples{
-dat = sim.ltrc(n = 100, distr.A = "weibull")$dat
+dat = sim.ltrc(n = 50, distr.A = "weibull")$dat
 plr(dat)
 }
 \references{

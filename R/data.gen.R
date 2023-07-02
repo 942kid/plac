@@ -44,14 +44,14 @@
 #' (\code{PT}).
 #' @examples
 #' # With time-invariant covariates only
-#' sim1 = sim.ltrc(n = 50)
+#' sim1 = sim.ltrc(n = 40)
 #' head(sim1$dat)
 #' # With one time-dependent covariate
-#' sim2 = sim.ltrc(n = 50, time.dep = TRUE,
+#' sim2 = sim.ltrc(n = 40, time.dep = TRUE,
 #'          distr.A = "binomial", p.A = 0.8, Cmax = 5)
 #' head(sim2$dat)
 #' # With one time-dependent covariate with dependence on the truncation time
-#' sim3 = sim.ltrc(n = 50, time.dep = TRUE, Zv.depA = TRUE, Cmax = 5)
+#' sim3 = sim.ltrc(n = 40, time.dep = TRUE, Zv.depA = TRUE, Cmax = 5)
 #' head(sim3$dat)
 #' @export
 sim.ltrc = function(n=200, b = c(1, 1), Z.type = c("C", "B"),
@@ -170,7 +170,7 @@ sim.ltrc = function(n=200, b = c(1, 1), Z.type = c("C", "B"),
 #' @return a list containing the test statistic and the p-value of the paired log-rant test.
 #' @references Jung, S.H. (1999). Rank tests for matched survival data. \emph{Lifetime Data Analysis, 5(1):67-79}.
 #' @examples
-#' dat = sim.ltrc(n = 100, distr.A = "weibull")$dat
+#' dat = sim.ltrc(n = 50, distr.A = "weibull")$dat
 #' plr(dat)
 #' @export
 plr = function(dat, A.name = "As", Y.name = "Ys", D.name = "Ds"){
