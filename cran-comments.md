@@ -5,9 +5,11 @@ This is a resubmission for package **plac**.
 Changes this version (v0.1.2):
 
 * Update package documentation.
-* Update NAMESPACE with `useDynLib(plac, .registration = TRUE)` to avoid notes from `R CMD check`.
+* Update NAMESPACE 
+  - Add `useDynLib(plac, .registration = TRUE)` to avoid notes from `R CMD check`
 * Update DESCRIPTION
   - Remove Date field
+  - Remove LazyData field
   - Add UTF-8 encoding
   - Increase roxygen2 version number
   - Change license field with `usethis::use_gpl_license()`
