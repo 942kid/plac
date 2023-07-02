@@ -1,32 +1,36 @@
 ## Resubmission
-This is a resubmission. In this version I have:
 
-* Added 
-```R 
-importFrom("stats", "as.formula", "coef", "model.frame",
-          "model.matrix", "model.response", "plnorm", "pnorm",
-          "qlnorm", "quantile", "rbinom", "rexp", "runif", "rweibull",
-          "stepfun")
-```
-to the NAMESPACE file.
+This is a resubmission for package **plac**.
 
-## Test environments
-* local ubuntu 14.04, R 3.2.5
-* ubuntu 12.04 (on travis-ci), R 3.2.4
-* win-builder (devel and release)
+Changes this version (v0.1.2):
 
-## R CMD check results
-There were no ERRORs or WARNINGs.
+* Update package documentation.
+* Update NAMESPACE with `useDynLib(plac, .registration = TRUE)` to avoid notes from `R CMD check`.
+* Update DESCRIPTION
+  - Remove Date field
+  - Add UTF-8 encoding
+  - Increase roxygen2 version number
+  - Change license field with `usethis::use_gpl_license()`
+* Update README
+  - Use `README.Rmd`
+  - Update badges
+  - Correct bibliography
 
-There was 1 NOTE:
+## R CMD check Results
+
+We used GitHub Actions to run `R CMD check` on different operating systems and R version.
+
+There were no ERROR or WARNING.
+
+There was 1 NOTE on Linux:
 
 * checking installed package size ... NOTE
-  installed size is 30.0Mb
+  installed size is 31.4Mb
   sub-directories of 1Mb or more:
-    libs  29.9Mb 
+  libs  31.2Mb
 
-  This because of the compiled source code.
-  
-## Downstream dependencies
+This because of the compiled source code.
+
+## Reverse Dependencies
 
 None.

@@ -1,17 +1,32 @@
-## 'plac' version 0.1.0
+## 'plac' version 0.1.2
 
-* Adding `sim.ltrc()` used to simulate left-truncated and right censored data
-* Adding `plr()` to test stationarity (uniform) assumption of the trunation times
-* Adding all the model fitting functions `PLAC_TXX()` which can handle multiple time-invariant and time-dependent covariates
-* Adding the main wrapper function `PLAC()` as the interface to the source
+* Update package documentation.
+* Update NAMESPACE with `useDynLib(plac, .registration = TRUE)` to avoid notes from `R CMD check`.
+* Update DESCRIPTION
+  - Remove Date field
+  - Add UTF-8 encoding
+  - Increase roxygen2 version number
+  - Change license field with `usethis::use_gpl_license()`
+* Update README
+  - Use `README.Rmd`
+  - Update badges
+  - Correct bibliography
 
 ## 'plac' version 0.1.1
 
-* Adding 
+* Add
 ```R 
 importFrom("stats", "as.formula", "coef", "model.frame",
           "model.matrix", "model.response", "plnorm", "pnorm",
           "qlnorm", "quantile", "rbinom", "rexp", "runif", "rweibull",
           "stepfun")
 ```
-to the NAMESPACE file.
+to NAMESPACE.
+
+## 'plac' version 0.1.0
+
+* Add `sim.ltrc()` used to simulate left-truncated and right censored data
+* Add `plr()` to test stationarity (uniform) assumption of the truncation times
+* Add all the model fitting functions `PLAC_TXX()` which can handle multiple time-invariant and time-dependent covariates
+* Add the main wrapper function `PLAC()` as the interface to the source
+
