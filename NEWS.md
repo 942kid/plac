@@ -1,4 +1,8 @@
-## 'plac' version 0.1.2
+# plac 0.1.3
+
+* Reduce sample sizes in data generation examples
+
+# plac version 0.1.2
 
 * Update package documentation.
 * Update NAMESPACE 
@@ -14,7 +18,7 @@
   - Update badges
   - Correct bibliography
 
-## 'plac' version 0.1.1
+# plac version 0.1.1
 
 * Add
 ```R 
@@ -25,7 +29,7 @@ importFrom("stats", "as.formula", "coef", "model.frame",
 ```
 to NAMESPACE.
 
-## 'plac' version 0.1.0
+# plac version 0.1.0
 
 * Add `sim.ltrc()` used to simulate left-truncated and right censored data
 * Add `plr()` to test stationarity (uniform) assumption of the truncation times
